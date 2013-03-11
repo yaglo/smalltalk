@@ -1,0 +1,36 @@
+00  10  pushTemp: 0
+01  21  pushConstant: 'Cell'
+02  11  pushTemp: 1
+03  F0  send: dequeueReusableCellWithIdentifier:forIndexPath:
+04  6A  popIntoTemp: 2
+05  01  pushRcvr: 1
+06  11  pushTemp: 1
+07  D3  send: row
+08  E2  send: objectAtIndex:
+09  6B  popIntoTemp: 3
+10  12  pushTemp: 2
+11  D5  send: textLabel
+12  13  pushTemp: 3
+13  D6  send: description
+14  E4  send: setText
+15  87  pop
+16  12  pushTemp: 2
+17  D8  send: contentView
+18  4A  pushLit: UIColor
+19  D9  send: redColor
+20  E7  send: setBackgroundColor:  7
+21  87  pop
+22  12  pushTemp: 2
+23  7C  returnTop
+!!
+00  dequeueReusableCellWithIdentifier:forIndexPath:
+01  Cell
+02  objectAtIndex:
+03  row
+04  setText:
+05  textLabel
+06  description
+07  setBackgroundColor:
+08  contentView
+09  redColor
+10  UIColor
