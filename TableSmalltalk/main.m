@@ -15,8 +15,6 @@
 #import "SmalltalkVM.h"
 
 
-#import "XMasterViewController.h"
-
 void InitializeAppDelegateClass()
 {
     SmalltalkVM *vm = [SmalltalkVM sharedVM];

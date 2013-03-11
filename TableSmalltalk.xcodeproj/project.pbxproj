@@ -12,13 +12,11 @@
 		7621508116EBBE0F0087408E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7621508016EBBE0F0087408E /* CoreGraphics.framework */; };
 		7621508716EBBE0F0087408E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7621508516EBBE0F0087408E /* InfoPlist.strings */; };
 		7621508916EBBE0F0087408E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7621508816EBBE0F0087408E /* main.m */; };
-		7621508D16EBBE0F0087408E /* AppDelegateObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7621508C16EBBE0F0087408E /* AppDelegateObjC.m */; };
 		7621508F16EBBE0F0087408E /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 7621508E16EBBE0F0087408E /* Default.png */; };
 		7621509116EBBE0F0087408E /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7621509016EBBE0F0087408E /* Default@2x.png */; };
 		7621509316EBBE0F0087408E /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7621509216EBBE0F0087408E /* Default-568h@2x.png */; };
 		7621509616EBBE0F0087408E /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7621509416EBBE0F0087408E /* MainStoryboard_iPhone.storyboard */; };
 		7621509916EBBE0F0087408E /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7621509716EBBE0F0087408E /* MainStoryboard_iPad.storyboard */; };
-		7621509C16EBBE0F0087408E /* XMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7621509B16EBBE0F0087408E /* XMasterViewController.m */; };
 		7621509F16EBBE0F0087408E /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7621509E16EBBE0F0087408E /* DetailViewController.m */; };
 		762150B116EBBE230087408E /* SmalltalkScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 762150A616EBBE230087408E /* SmalltalkScanner.m */; };
 		762150B216EBBE230087408E /* SmalltalkObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 762150A816EBBE230087408E /* SmalltalkObject.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -40,15 +38,11 @@
 		7621508616EBBE0F0087408E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7621508816EBBE0F0087408E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		7621508A16EBBE0F0087408E /* TableSmalltalk-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TableSmalltalk-Prefix.pch"; sourceTree = "<group>"; };
-		7621508B16EBBE0F0087408E /* AppDelegateObjC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegateObjC.h; sourceTree = "<group>"; };
-		7621508C16EBBE0F0087408E /* AppDelegateObjC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegateObjC.m; sourceTree = "<group>"; };
 		7621508E16EBBE0F0087408E /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		7621509016EBBE0F0087408E /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		7621509216EBBE0F0087408E /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		7621509516EBBE0F0087408E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
 		7621509816EBBE0F0087408E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
-		7621509A16EBBE0F0087408E /* XMasterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XMasterViewController.h; sourceTree = "<group>"; };
-		7621509B16EBBE0F0087408E /* XMasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XMasterViewController.m; sourceTree = "<group>"; };
 		7621509D16EBBE0F0087408E /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		7621509E16EBBE0F0087408E /* DetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		762150A516EBBE230087408E /* SmalltalkScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SmalltalkScanner.h; sourceTree = "<group>"; };
@@ -116,12 +110,8 @@
 		7621508216EBBE0F0087408E /* TableSmalltalk */ = {
 			isa = PBXGroup;
 			children = (
-				7621508B16EBBE0F0087408E /* AppDelegateObjC.h */,
-				7621508C16EBBE0F0087408E /* AppDelegateObjC.m */,
 				7621509416EBBE0F0087408E /* MainStoryboard_iPhone.storyboard */,
 				7621509716EBBE0F0087408E /* MainStoryboard_iPad.storyboard */,
-				7621509A16EBBE0F0087408E /* XMasterViewController.h */,
-				7621509B16EBBE0F0087408E /* XMasterViewController.m */,
 				7621509D16EBBE0F0087408E /* DetailViewController.h */,
 				7621509E16EBBE0F0087408E /* DetailViewController.m */,
 				762150A516EBBE230087408E /* SmalltalkScanner.h */,
@@ -227,8 +217,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				7621508916EBBE0F0087408E /* main.m in Sources */,
-				7621508D16EBBE0F0087408E /* AppDelegateObjC.m in Sources */,
-				7621509C16EBBE0F0087408E /* XMasterViewController.m in Sources */,
 				7621509F16EBBE0F0087408E /* DetailViewController.m in Sources */,
 				762150B116EBBE230087408E /* SmalltalkScanner.m in Sources */,
 				762150B216EBBE230087408E /* SmalltalkObject.m in Sources */,
@@ -370,6 +358,7 @@
 				762150A416EBBE0F0087408E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -287,55 +287,58 @@ static NSMutableArray *registeredHandlers = nil;
 	CFHTTPMessageSetHeaderFieldValue(
                                      response, (CFStringRef)@"Connection", (CFStringRef)@"close");
     
-    NSDictionary *parameters = [url sy_keysAndValuesOfQuery];
-    
     NSString *responseString =
     @"<form action=\"replace\">"
     @"Class: <input type=\"text\" name=\"class\" value=\"{class}\"/> "
     @"Method: <input type=\"text\" name=\"method\" value=\"{method}\"/><br>"
     @"<textarea name=\"code\" cols=\"120\" rows=\"40\">{code}</textarea><br>"
     @"<input type=\"submit\"></form>";
-    responseString = [responseString stringByReplacingOccurrencesOfString:@"{class}" withString:[parameters objectForKey:@"class"]];
-    responseString = [responseString stringByReplacingOccurrencesOfString:@"{method}" withString:[parameters objectForKey:@"method"]];
-    responseString = [responseString stringByReplacingOccurrencesOfString:@"{code}" withString:[parameters objectForKey:@"code"]];
-    
-    if ([parameters count] == 3) {
-        SmalltalkVM *vm = [SmalltalkVM sharedVM];
-        
-        NSString *code = [parameters objectForKey:@"code"];
-        NSArray *parts = [code componentsSeparatedByString:@"!!"];
-        
-        NSString *bytecodePart = [[parts objectAtIndex:0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        NSString *literalsPart = [[parts objectAtIndex:1] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
-        NSMutableData *bytecodeData = [[NSMutableData alloc] init];
-        for (NSString *line in [bytecodePart componentsSeparatedByString:@"\n"]) {
-            NSArray *lineParts = [line componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-            NSString *bytecode = [lineParts objectAtIndex:2];
-            NSScanner *scanner = [[NSScanner alloc] initWithString:bytecode];
-            unsigned int byte = 0;
-            [scanner scanHexInt:&byte];
-            NSLog(@"byte = %d", byte);
-            byte_t bytes[1];
-            bytes[0] = byte;
-            [bytecodeData appendBytes:bytes length:1];
-        }
+    NSDictionary *parameters = [url sy_keysAndValuesOfQuery];
+
+    if (parameters) {
+        responseString = [responseString stringByReplacingOccurrencesOfString:@"{class}" withString:[parameters objectForKey:@"class"]];
+        responseString = [responseString stringByReplacingOccurrencesOfString:@"{method}" withString:[parameters objectForKey:@"method"]];
+        responseString = [responseString stringByReplacingOccurrencesOfString:@"{code}" withString:[parameters objectForKey:@"code"]];
         
-        NSMutableArray *literals = [[NSMutableArray alloc] init];
-        for (NSString *line in [literalsPart componentsSeparatedByString:@"\n"]) {
-            NSArray *lineParts = [line componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-            NSLog(@"%@", lineParts);
+        if ([parameters count] == 3) {
+            SmalltalkVM *vm = [SmalltalkVM sharedVM];
             
-            NSString *literal = [[lineParts objectAtIndex:2] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-            [literals addObject:literal];
+            NSString *code = [parameters objectForKey:@"code"];
+            NSArray *parts = [code componentsSeparatedByString:@"!!"];
+            
+            NSString *bytecodePart = [[parts objectAtIndex:0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            NSString *literalsPart = [[parts objectAtIndex:1] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+            NSMutableData *bytecodeData = [[NSMutableData alloc] init];
+            for (NSString *line in [bytecodePart componentsSeparatedByString:@"\n"]) {
+                NSArray *lineParts = [line componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+                NSString *bytecode = [lineParts objectAtIndex:2];
+                NSScanner *scanner = [[NSScanner alloc] initWithString:bytecode];
+                unsigned int byte = 0;
+                [scanner scanHexInt:&byte];
+                NSLog(@"byte = %d", byte);
+                byte_t bytes[1];
+                bytes[0] = byte;
+                [bytecodeData appendBytes:bytes length:1];
+            }
+            
+            NSMutableArray *literals = [[NSMutableArray alloc] init];
+            for (NSString *line in [literalsPart componentsSeparatedByString:@"\n"]) {
+                NSArray *lineParts = [line componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+                NSLog(@"%@", lineParts);
+                
+                NSString *literal = [[lineParts objectAtIndex:2] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                [literals addObject:literal];
+            }
+            
+            NSLog(@"%@", bytecodeData);
+            
+            SmalltalkClass *class = [vm->_globalVariables objectForKey:[parameters objectForKey:@"class"]];
+            SmalltalkMethod *method = [[SmalltalkMethod alloc] initWithSelector:[parameters objectForKey:@"method"]
+                                                                       bytecode:bytecodeData literals:literals];
+            [class smalltalk_addInstanceMethod:method];
         }
-        
-        NSLog(@"%@", bytecodeData);
-        
-        SmalltalkClass *class = [vm->_globalVariables objectForKey:[parameters objectForKey:@"class"]];
-        SmalltalkMethod *method = [[SmalltalkMethod alloc] initWithSelector:[parameters objectForKey:@"method"]
-                                                                   bytecode:bytecodeData literals:literals];
-        [class smalltalk_addInstanceMethod:method];
     }
 
     CFHTTPMessageSetBody(
