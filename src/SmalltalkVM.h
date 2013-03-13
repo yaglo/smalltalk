@@ -19,6 +19,8 @@ typedef uint8_t byte_t;
     NSMutableDictionary *_globalVariables;
     NSMutableArray *_stack;
     NSMutableArray *_methodContextStack;
+
+    NSMutableDictionary *_packages;
 }
 
 @property (strong, nonatomic) SmalltalkClass *rootClass;

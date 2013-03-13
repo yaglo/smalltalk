@@ -15,7 +15,7 @@
 #import "SmalltalkObject.h"
 #import "SmalltalkVM.h"
 
-#import "STSocketServer.h"
+#import "SmalltalkSocketServer.h"
 
 @implementation SmalltalkVM
 
@@ -26,6 +26,7 @@
         _globalVariables = [[NSMutableDictionary alloc] init];
         _stack = [[NSMutableArray alloc] init];
         _methodContextStack = [[NSMutableArray alloc] init];
+        _packages = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -419,10 +420,20 @@ char GetReturnType(id receiver, SEL selector)
 //    for (int i = 0; i < numClasses; i++) {
 //        [_globalVariables setObject:classes[i] forKey:[NSString stringWithUTF8String:class_getName(classes[i])]];
 //    }
-    
-    [_globalVariables setObject:[UIDevice class] forKey:@"UIDevice"];
-    [_globalVariables setObject:[UIColor class] forKey:@"UIColor"];
-    [_globalVariables setObject:[STSocketServer class] forKey:@"STSocketServer"];
+
+    NSMutableArray *foundationClasses = [NSMutableArray array];
+
+#define FoundationClass(name) [_globalVariables setObject:[SmalltalkSocketServer class] forKey:name]; [foundationClasses addObject:name];
+
+    FoundationClass(@"NSArray");
+    FoundationClass(@"NSDictionary");
+    FoundationClass(@"NSObject");
+    FoundationClass(@"NSMutableArray");
+    FoundationClass(@"NSMutableDictionary");
+    FoundationClass(@"NSString");
+
+    [_packages setObject:foundationClasses forKey:@"Foundation"];
+    [_packages setObject:@[ @"AppDelegate" ] forKey:@"RandomApp"];
 
     free(classes);
 }

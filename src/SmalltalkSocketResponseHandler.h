@@ -1,5 +1,5 @@
 //
-//  STSocketResponseHandler.h
+//  SmalltalkSocketResponseHandler.h
 //  Smalltalk
 //
 //  Created by Stanislav Yaglo on 05.03.13.
@@ -7,31 +7,31 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "STSocketServer.h"
+#import "SmalltalkSocketServer.h"
 
-@interface STSocketResponseHandler : NSObject
+@interface SmalltalkSocketResponseHandler : NSObject
 {
 	CFHTTPMessageRef request;
 	NSString *requestMethod;
 	NSDictionary *headerFields;
 	NSFileHandle *fileHandle;
-	STSocketServer *server;
+	SmalltalkSocketServer *server;
 	NSURL *url;
 }
 
 + (NSUInteger)priority;
 + (void)registerHandler:(Class)handlerClass;
 
-+ (STSocketResponseHandler *)handlerForRequest:(CFHTTPMessageRef)aRequest
++ (SmalltalkSocketResponseHandler *)handlerForRequest:(CFHTTPMessageRef)aRequest
                                     fileHandle:(NSFileHandle *)requestFileHandle
-                                        server:(STSocketServer *)aServer;
+                                        server:(SmalltalkSocketServer *)aServer;
 
 - (id)initWithRequest:(CFHTTPMessageRef)aRequest
                method:(NSString *)method
                   url:(NSURL *)requestURL
          headerFields:(NSDictionary *)requestHeaderFields
            fileHandle:(NSFileHandle *)requestFileHandle
-               server:(STSocketServer *)aServer;
+               server:(SmalltalkSocketServer *)aServer;
 - (void)startResponse;
 - (void)endResponse;
 

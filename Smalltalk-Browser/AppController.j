@@ -23,13 +23,16 @@
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
 {
-    [CPMenu setMenuBarVisible:YES];
+//    [CPMenu setMenuBarVisible:YES];
 
     packages = [[CPArray alloc] init];
-    [packages addObject:@"Smalltalk"];
-    [packages addObject:@"AppKit"];
-    [packages addObject:@"Foundation"];
-    [packages addObject:@"SampleApplication"];
+    // [packages addObject:@"Smalltalk"];
+    // [packages addObject:@"AppKit"];
+    // [packages addObject:@"Foundation"];
+    // [packages addObject:@"SampleApplication"];
+
+    var request = [CPURLRequest requestWithURL:[CPURL URLWithString:@"http://localhost:8081/packages/"]];
+    var connection = [[CPURLConnection alloc] initWithRequest:request delegate:self startImmediately:YES];
 
     classes = [[CPArray alloc] init];
     [classes addObject:@"AppDelegate"];
@@ -149,7 +152,7 @@
     var scrollView = [[CPScrollView alloc] initWithFrame:CGRectMake(
         CGRectGetWidth([contentView bounds]) / 2 + CGRectGetWidth([contentView bounds]) / 4 - 1,
         -1,
-        CGRectGetWidth([contentView bounds]) / 4 + 1,
+        CGRectGetWidth([contentView bounds]) / 4 + 2,
         CGRectGetHeight([contentView bounds]) / 3)];
 
     [scrollView setBorderType:CPLineBorder];
@@ -179,7 +182,7 @@
         CGRectGetWidth([contentView bounds]) + 2,
         CGRectGetHeight([contentView bounds]) - CGRectGetHeight([contentView bounds]) / 3)];
 
-    [codeView setMainFrameURL:@"http://localhost/~stam/Smalltalk/code.html"];
+    [codeView setMainFrameURL:@"code.html"];
     [contentView addSubview:codeView];
 
     [window orderFront:self];
@@ -211,6 +214,40 @@
 
 - (void)tableViewSelectionDidChange:(CPNotification)aNotification
 {
+    if ([aNotification object] == packagesTableView) {
+        var package = [packages objectAtIndex:[packagesTableView selectedRow]];
+        classes = [[CPArray alloc] init];
+
+        for (var i = 0; i < package.length; i++) {
+            [classes addObject:package[i]];
+        }
+
+        [classesTableView deselectAll];
+        [classesTableView reloadData];
+    }
+}
+
+
+- (void)connection:(CPURLConnection)connection didFailWithError:(id)error
+{
+    alert("error loading classes");
+}
+
+
+- (void)connection:(CPURLConnection)connection didReceiveResponse:(CPURLResponse)response
+{
+}
+
+- (void)connection:(CPURLConnection)aConnection didReceiveData:(CPString)data
+{
+    var packagesJSON = [data objectFromJSON];
+
+    packages = [[CPArray alloc] init];
+    for (var package in packagesJSON) {
+        [packages addObject:package];
+    }
+    packages = [packages sortedArrayUsingSelector:@selector(compare:)];
+    [packagesTableView reloadData];
 }
 
 @end
