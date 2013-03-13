@@ -21,28 +21,55 @@
 
 @implementation NSURL (SYBasicKeyValueParsing)
 
+//- (NSDictionary *)sy_keysAndValuesOfString:(NSString *)string
+//{
+//	if (!string) return nil;
+//    
+//	NSMutableDictionary *result = [NSMutableDictionary dictionary];
+//    
+//	for (NSString *pair in [string componentsSeparatedByString:@"&"]) {
+//		NSArray *keyAndValue = [pair componentsSeparatedByString:@"="];
+//
+//		if ([keyAndValue count] == 2) {
+//			NSString *value = [keyAndValue objectAtIndex:1];
+//			value = [value stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+//			value = [value stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//
+//			[result setObject:value forKey:[keyAndValue objectAtIndex:0]];
+//		}
+//	}
+//	return [[result copy] autorelease];
+//}
+
+// Returns a dictionary of a string in format key=value&key=value
 - (NSDictionary *)sy_keysAndValuesOfString:(NSString *)string
 {
-    if (!string) return nil;
-    
-    NSMutableDictionary *result = [NSMutableDictionary dictionary];
-    
-    for (NSString *pair in [string componentsSeparatedByString:@"&"]) {
-        NSArray *keyAndValue = [pair componentsSeparatedByString:@"="];
-        if ([keyAndValue count] == 2) {
-            NSString *value = [keyAndValue objectAtIndex:1];
-            value = [value stringByReplacingOccurrencesOfString:@"+" withString:@" "];
-            value = [value stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+	if ([string length] == 0)
+		return nil;
 
-            [result setObject:value forKey:[keyAndValue objectAtIndex:0]];
-        }
-    }
-    return [[result copy] autorelease];
+	NSCharacterSet *ampEqualSet = [NSCharacterSet characterSetWithCharactersInString:@"&="];
+	NSArray *pairs = [string componentsSeparatedByCharactersInSet:ampEqualSet];
+
+	__block NSMutableArray *keys = [[NSMutableArray alloc] init];
+	__block NSMutableArray *objects = [[NSMutableArray alloc] init];
+	[pairs enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop __unused) {
+		obj = [obj stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+		obj = [obj stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+
+		if (idx % 2 == 0)
+			[keys addObject:obj];
+		else
+			[objects addObject:obj];
+	}];
+	if ([keys count] > [objects count])
+		[keys removeLastObject];
+
+	return [NSDictionary dictionaryWithObjects:objects forKeys:keys];
 }
 
 - (NSDictionary *)sy_keysAndValuesOfFragment
 {
-    return [self sy_keysAndValuesOfString:[self fragment]];
+	return [self sy_keysAndValuesOfString:[self fragment]];
 }
 
 - (NSDictionary *)sy_keysAndValuesOfQuery
@@ -150,22 +177,13 @@ static NSMutableArray *registeredHandlers = nil;
 //
 // returns the class to handle the request, or nil if no handler exists.
 //
-+ (Class)handlerClassForRequest:(CFHTTPMessageRef)aRequest
-                         method:(NSString *)requestMethod
-                            url:(NSURL *)requestURL
-                   headerFields:(NSDictionary *)requestHeaderFields
++ (Class)handlerClassForRequest:(CFHTTPMessageRef)aRequest method:(NSString *)requestMethod url:(NSURL *)requestURL headerFields:(NSDictionary *)requestHeaderFields
 {
-	for (Class handlerClass in registeredHandlers)
-	{
-		if ([handlerClass canHandleRequest:aRequest
-                                    method:requestMethod
-                                       url:requestURL
-                              headerFields:requestHeaderFields])
-		{
+	for (Class handlerClass in registeredHandlers) {
+		if ([handlerClass canHandleRequest:aRequest method:requestMethod url:requestURL headerFields:requestHeaderFields]) {
 			return handlerClass;
 		}
 	}
-	
 	return nil;
 }
 
@@ -279,105 +297,80 @@ static NSMutableArray *registeredHandlers = nil;
 //
 - (void)startResponse
 {
-	CFHTTPMessageRef response =
-    CFHTTPMessageCreateResponse(
-                                kCFAllocatorDefault, 501, NULL, kCFHTTPVersion1_1);
-	CFHTTPMessageSetHeaderFieldValue(
-                                     response, (CFStringRef)@"Content-Type", (CFStringRef)@"text/html");
-	CFHTTPMessageSetHeaderFieldValue(
-                                     response, (CFStringRef)@"Connection", (CFStringRef)@"close");
-    
-    NSString *responseString =
-    @"<form action=\"replace\">"
-    @"Class: <input type=\"text\" name=\"class\" value=\"{class}\"/> "
-    @"Method: <input type=\"text\" name=\"method\" value=\"{method}\"/><br>"
-    @"<textarea name=\"code\" cols=\"120\" rows=\"40\">{code}</textarea><br>"
-    @"<input type=\"submit\"></form>";
+	CFHTTPMessageRef response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 200, NULL, kCFHTTPVersion1_1);
+	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Type", (CFStringRef)@"text/html");
+	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Connection", (CFStringRef)@"close");
+	
+	NSString *responseString =
+		@"<form action=\"replace\">"
+		@"Class: <input type=\"text\" name=\"class\" value=\"{class}\"/> "
+		@"Method: <input type=\"text\" name=\"method\" value=\"{method}\"/><br>"
+		@"<textarea name=\"code\" cols=\"120\" rows=\"40\">{code}</textarea><br>"
+		@"<input type=\"submit\"></form>";
 
-    NSDictionary *parameters = [url sy_keysAndValuesOfQuery];
+	NSDictionary *parameters = [url sy_keysAndValuesOfQuery];
 
-    if (parameters) {
-        responseString = [responseString stringByReplacingOccurrencesOfString:@"{class}" withString:[parameters objectForKey:@"class"]];
-        responseString = [responseString stringByReplacingOccurrencesOfString:@"{method}" withString:[parameters objectForKey:@"method"]];
-        responseString = [responseString stringByReplacingOccurrencesOfString:@"{code}" withString:[parameters objectForKey:@"code"]];
-        
-        if ([parameters count] == 3) {
-            SmalltalkVM *vm = [SmalltalkVM sharedVM];
-            
-            NSString *code = [parameters objectForKey:@"code"];
-            NSArray *parts = [code componentsSeparatedByString:@"!!"];
-            
-            NSString *bytecodePart = [[parts objectAtIndex:0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-            NSString *literalsPart = [[parts objectAtIndex:1] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+	if (parameters) {
+		responseString = [responseString stringByReplacingOccurrencesOfString:@"{class}" withString:[parameters objectForKey:@"class"]];
+		responseString = [responseString stringByReplacingOccurrencesOfString:@"{method}" withString:[parameters objectForKey:@"method"]];
+		responseString = [responseString stringByReplacingOccurrencesOfString:@"{code}" withString:[parameters objectForKey:@"code"]];
 
-            NSMutableData *bytecodeData = [[NSMutableData alloc] init];
-            for (NSString *line in [bytecodePart componentsSeparatedByString:@"\n"]) {
-                NSArray *lineParts = [line componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-                NSString *bytecode = [lineParts objectAtIndex:2];
-                NSScanner *scanner = [[NSScanner alloc] initWithString:bytecode];
-                unsigned int byte = 0;
-                [scanner scanHexInt:&byte];
-                NSLog(@"byte = %d", byte);
-                byte_t bytes[1];
-                bytes[0] = byte;
-                [bytecodeData appendBytes:bytes length:1];
-            }
-            
-            NSMutableArray *literals = [[NSMutableArray alloc] init];
-            for (NSString *line in [literalsPart componentsSeparatedByString:@"\n"]) {
-                NSArray *lineParts = [line componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-                NSLog(@"%@", lineParts);
-                
-                NSString *literal = [[lineParts objectAtIndex:2] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-                [literals addObject:literal];
-            }
-            
-            NSLog(@"%@", bytecodeData);
-            
-            SmalltalkClass *class = [vm->_globalVariables objectForKey:[parameters objectForKey:@"class"]];
-            SmalltalkMethod *method = [[SmalltalkMethod alloc] initWithSelector:[parameters objectForKey:@"method"]
-                                                                       bytecode:bytecodeData literals:literals];
-            [class smalltalk_addInstanceMethod:method];
-        }
-    }
+		if ([parameters count] == 3) {
+			SmalltalkVM *vm = [SmalltalkVM sharedVM];
 
-    CFHTTPMessageSetBody(
-                         response,
-                         (CFDataRef)[responseString
-                                     dataUsingEncoding:NSUTF8StringEncoding]);
+			NSString *code = [parameters objectForKey:@"code"];
+			NSArray *parts = [code componentsSeparatedByString:@"!!"];
 
-    
-//    NSString *bytecodeString = [[url absoluteString] stringByReplacingOccurrencesOfString:@"http://localhost:8080/?bytecode=" withString:@""];
-//    bytecodeString = [bytecodeString stringByReplacingOccurrencesOfString:@"%20" withString:@""];
-//    
-//    int byteCount = [bytecodeString length] / 2;
-//    byte_t data[byteCount];
-//
-//    for (int i = 0; i < byteCount; i++) {
-//        const char *code = [[bytecodeString substringWithRange:NSMakeRange(i * 2, 2)] cStringUsingEncoding:NSASCIIStringEncoding];
-//        data[i] = (int)strtol(code, NULL, 16);
-//    }
-//    NSData *bytecode = [NSData dataWithBytes:data length:byteCount];
-//    [STBytecodeInterpreter interpretBytecode:bytecode];
+			NSString *bytecodePart = [[parts objectAtIndex:0] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+			NSString *literalsPart = [[parts objectAtIndex:1] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
-//	CFHTTPMessageSetBody(
-//                         response,
-//                         (CFDataRef)[[NSString stringWithFormat:
-//                                      @"<?xml version=\"1.0\">"
-//                                      @"<compilationStatus>OK</compilationStatus>"]
-//                                     dataUsingEncoding:NSUTF8StringEncoding]);
+			NSMutableData *bytecodeData = [[NSMutableData alloc] init];
+
+			for (NSString *line in [bytecodePart componentsSeparatedByString:@"\n"]) {
+				unsigned int byte = 0;
+				byte_t bytes[1];
+
+				NSArray *lineParts = [line componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+				NSString *bytecode = [lineParts objectAtIndex:2];
+				NSScanner *scanner = [[NSScanner alloc] initWithString:bytecode];
+				[scanner scanHexInt:&byte];
+
+				bytes[0] = byte;
+				[bytecodeData appendBytes:bytes length:1];
+			}
+
+			NSMutableArray *literals = [[NSMutableArray alloc] init];
+			
+			for (NSString *line in [literalsPart componentsSeparatedByString:@"\n"]) {
+				NSArray *lineParts = [line componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+
+				NSString *literal = [[lineParts objectAtIndex:2] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+				[literals addObject:literal];
+			}
+
+			SmalltalkClass *class = [vm->_globalVariables objectForKey:[parameters objectForKey:@"class"]];
+			SmalltalkMethod *method = [[SmalltalkMethod alloc]
+									   initWithSelector:[parameters objectForKey:@"method"]
+									   bytecode:bytecodeData
+									   literals:literals];
+
+			[class smalltalk_addInstanceMethod:method];
+
+			NSLog(@"Replaced method %@ of class %@", [parameters objectForKey:@"method"], [parameters objectForKey:@"class"]);
+		}
+	}
+
+	CFHTTPMessageSetBody(response, (CFDataRef)[responseString dataUsingEncoding:NSUTF8StringEncoding]);
+
 	CFDataRef headerData = CFHTTPMessageCopySerializedMessage(response);
-	@try
-	{
+	@try {
 		[fileHandle writeData:(NSData *)headerData];
 	}
-	@catch (NSException *exception)
-	{
+	@catch (NSException *exception) {
 		// Ignore the exception, it normally just means the client
 		// closed the connection from the other end.
 	}
-	@finally
-	{
+	@finally {
 		CFRelease(headerData);
 		CFRelease(response);
 		[server closeHandler:self];

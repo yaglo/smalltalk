@@ -58,7 +58,7 @@
 		762150AF16EBBE230087408E /* SmalltalkVM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SmalltalkVM.h; sourceTree = "<group>"; };
 		762150B016EBBE230087408E /* SmalltalkVM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SmalltalkVM.m; sourceTree = "<group>"; };
 		762150B716ECB6240087408E /* STSocketResponseHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSocketResponseHandler.h; sourceTree = "<group>"; };
-		762150B816ECB6240087408E /* STSocketResponseHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSocketResponseHandler.m; sourceTree = "<group>"; };
+		762150B816ECB6240087408E /* STSocketResponseHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSocketResponseHandler.m; sourceTree = "<group>"; usesTabs = 1; };
 		762150B916ECB6240087408E /* STSocketServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSocketServer.h; sourceTree = "<group>"; };
 		762150BA16ECB6250087408E /* STSocketServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSocketServer.m; sourceTree = "<group>"; };
 		762150BD16ECB73F0087408E /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
