@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Stanislav Yaglo. All rights reserved.
 //
 
+#import <objc/message.h>
 #import <objc/runtime.h>
 #import <UIKit/UIKit.h>
 
@@ -111,7 +112,7 @@ void InitializeAppDelegateClass()
 
 void InitializeMasterViewControllerClass()
 {
-    SmalltalkClass *MasterViewController = [SmalltalkClass smalltalk_classWithName:@"MasterViewController" superclass:[UIViewController class]];
+    SmalltalkClass *MasterViewController = [SmalltalkClass smalltalk_classWithName:@"XMasterViewController" superclass:[UIViewController class]];
     MasterViewController->_instanceVariableNames = @[ @"detailViewController", @"objects" ];
 
     // - detailViewController
@@ -363,15 +364,224 @@ void InitializeMasterViewControllerClass()
 //    [MasterViewController smalltalk_addInstanceMethod:viewDidLoad];
 }
 
+
+
+
+
+
+@interface CompiledAppDelegate : NSObject
+@end
+
+@implementation CompiledAppDelegate {
+    id window;
+}
+
+/*
+ window
+     ^window
+ */
+- window {
+    return window;
+}
+
+/*
+ setWindow: aWindow
+     window := aWindow
+ */
+
+- setWindow: aWindow {
+    window = aWindow;
+    return self;
+}
+
+/*
+ application: application didFinishLaunchingWithOptions: launchOptions
+     UIDevice currentDevice userInterfaceIdiom = UIUserInterfaceIdiomPad
+         ifTrue: [| splitViewController navigationController |
+                  splitViewController := self window rootViewController.
+                  navigationController := splitViewController viewControllers lastObject.
+                  splitViewController setDelegate: navigationController topViewController].
+     ^true
+ */
+
+- (BOOL)application: application didFinishLaunchingWithOptions: launchOptions {
+    Class literal_0 = NSClassFromString(@"UIDevice");
+    id t_id_0 = objc_msgSend(literal_0, @selector(currentDevice));
+    int t_int_0 = (int)objc_msgSend(t_id_0, @selector(userInterfaceIdiom));
+    BOOL t_bool_0 = t_int_0 == UIUserInterfaceIdiomPad;
+    
+    if (!t_bool_0) goto l_0;
+    
+    {
+        id splitViewController;
+        id navigationController;
+        
+        t_id_0 = objc_msgSend(self, @selector(window));
+        t_id_0 = objc_msgSend(t_id_0, @selector(rootViewController));
+        splitViewController = t_id_0;
+        t_id_0 = objc_msgSend(splitViewController, @selector(viewControllers));
+        t_id_0 = objc_msgSend(t_id_0, @selector(lastObject));
+        navigationController = t_id_0;
+        id t_id_0 = objc_msgSend(navigationController, @selector(topViewController));
+        (void)objc_msgSend(splitViewController, @selector(setDelegate:), t_id_0);
+    }
+    
+l_0:
+    return YES;
+}
+
+@end
+
+
+
+
+
+@interface MasterViewController : UIViewController
+@end
+
+@implementation MasterViewController {
+    id detailViewController;
+    id objects;
+}
+
+/*
+ detailViewController
+     ^detailViewController
+ */
+- detailViewController {
+    return detailViewController;
+}
+
+/*
+ setDetailViewController: aDetailViewController
+     detailViewController := aDetailViewController
+ */
+
+- setDetailViewController: aDetailViewController {
+    detailViewController = aDetailViewController;
+    return self;
+}
+
+/*
+ numberOfSectionsInTableView: tableView
+     ^1
+ */
+
+- (int)numberOfSectionsInTableView: tableView {
+    return 1;
+}
+
+
+/*
+ tableView: tableView numberOfRowsInSection: section
+     ^objects count
+*/
+
+- (int)tableView: tableView numberOfRowsInSection:(int)section
+{
+    int t_int_0 = (int)objc_msgSend(objects, @selector(count));
+    return t_int_0;
+}
+
+
+// viewDidLoad
+//     | addButton |
+//     super viewDidLoad.
+//
+//     objects := NSMutableArray new.
+//
+//     "Do any additional setup after loading the view, typically from a nib"
+//     self navigationItem setLeftBarButtonItem: self editButtonItem.
+//
+//     addButton := UIBarButtonItem alloc initWithBarButtonSystemItem: 4 target: self action: #'insertNewObject:'.
+//     self navigationItem setRightBarButtonItem: addButton.
+//     self setDetailViewController: self splitViewController viewControllers lastObject topViewController
+
+- (void)viewDidLoad
+{
+    SmalltalkVM *vm = [SmalltalkVM sharedVM];
+
+    id addButton;
+    id literal_0 = [vm->_globalVariables objectForKey:@"NSMutableArray"];
+    id literal_1 = [vm->_globalVariables objectForKey:@"UIBarButtonItem"];
+
+    id t_id_0, t_id_1;
+
+    t_id_0 = objc_msgSend(literal_0, @selector(new));
+    objects = t_id_0;
+
+    t_id_0 = objc_msgSend(self, @selector(editButtonItem));
+    t_id_1 = objc_msgSend(self, @selector(navigationItem));
+    (void)objc_msgSend(t_id_1, @selector(setLeftBarButtonItem:), t_id_0);
+
+    t_id_0 = objc_msgSend(literal_1, @selector(alloc));
+    t_id_0 = objc_msgSend(t_id_0, @selector(initWithBarButtonSystemItem:target:action:), 4, self, @selector(insertNewObject:));
+    addButton = t_id_0;
+    t_id_0 = objc_msgSend(self, @selector(navigationItem));
+    (void)objc_msgSend(t_id_0, @selector(setRightBarButtonItem:), addButton);
+    t_id_0 = objc_msgSend(self, @selector(splitViewController));
+    t_id_0 = objc_msgSend(self, @selector(viewControllers));
+    t_id_0 = objc_msgSend(self, @selector(lastObject));
+    t_id_0 = objc_msgSend(self, @selector(topViewController));
+    objc_msgSend(self, @selector(setDetailViewController:), t_id_0);
+}
+
+
+
+/*
+ application: application didFinishLaunchingWithOptions: launchOptions
+ UIDevice currentDevice userInterfaceIdiom = UIUserInterfaceIdiomPad
+ ifTrue: [| splitViewController navigationController |
+ splitViewController := self window rootViewController.
+ navigationController := splitViewController viewControllers lastObject.
+ splitViewController setDelegate: navigationController topViewController].
+ ^true
+ */
+
+- (BOOL)application: application didFinishLaunchingWithOptions: launchOptions {
+    Class literal_0 = NSClassFromString(@"UIDevice");
+    id t_id_0 = objc_msgSend(literal_0, @selector(currentDevice));
+    int t_int_0 = (int)objc_msgSend(t_id_0, @selector(userInterfaceIdiom));
+    BOOL t_bool_0 = t_int_0 == 4;
+    
+    if (!t_bool_0) goto l_0;
+    
+    {
+        id splitViewController;
+        id navigationController;
+        
+        t_id_0 = objc_msgSend(self, @selector(window));
+        t_id_0 = objc_msgSend(t_id_0, @selector(rootViewController));
+        splitViewController = t_id_0;
+        t_id_0 = objc_msgSend(splitViewController, @selector(viewControllers));
+        t_id_0 = objc_msgSend(t_id_0, @selector(lastObject));
+        navigationController = t_id_0;
+        id t_id_0 = objc_msgSend(navigationController, @selector(topViewController));
+        (void)objc_msgSend(splitViewController, @selector(setDelegate:), t_id_0);
+    }
+    
+l_0:
+    return YES;
+}
+
+@end
+
+
+
+
+
+
+
+
 int main(int argc, char *argv[])
 {
     @autoreleasepool {
         SmalltalkVM *vm = [SmalltalkVM sharedVM];
         [vm initializeVM];
         
-        InitializeAppDelegateClass();
-        InitializeMasterViewControllerClass();
+//        InitializeAppDelegateClass();
+//        InitializeMasterViewControllerClass();
 
-        return UIApplicationMain(argc, argv, nil, @"AppDelegate");
+        return UIApplicationMain(argc, argv, nil, @"CompiledAppDelegate");
     }
 }

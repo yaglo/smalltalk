@@ -1,32 +1,18 @@
 //
-//  STSocketServer.m
+//  SmalltalkSocketServer.m
 //  Smalltalk
 //
 //  Created by Stanislav Yaglo on 05.03.13.
 //  Copyright (c) 2013 Stanislav Yaglo. All rights reserved.
 //
 
-//
-//  STSocketServer.m
-//  TextTransfer
-//
-//  Created by Matt Gallagher on 2009/07/13.
-//  Copyright 2009 Matt Gallagher. All rights reserved.
-//
-//  Permission is given to use this source code file, free of charge, in any
-//  project, commercial or otherwise, entirely at your risk, with the condition
-//  that any redistribution (in part or whole) of source code must retain
-//  this copyright and permission notice. Attribution in compiled projects is
-//  appreciated but not required.
-//
-
-#import "STSocketServer.h"
+#import "SmalltalkSocketServer.h"
 #import <sys/socket.h>
 #import <netinet/in.h>
 #if TARGET_OS_IPHONE
 #import <CFNetwork/CFNetwork.h>
 #endif
-#import "STSocketResponseHandler.h"
+#import "SmalltalkSocketResponseHandler.h"
 
 #define HTTP_SERVER_PORT 8081
 
@@ -36,21 +22,21 @@ NSString * const STSocketServerNotificationStateChanged = @"ServerNotificationSt
 // Internal methods and properties:
 //	The "lastError" and "state" are only writable by the server itself.
 //
-@interface STSocketServer ()
+@interface SmalltalkSocketServer ()
 @property (nonatomic, readwrite, retain) NSError *lastError;
 @property (readwrite, assign) STSocketServerState state;
 @end
 
-@implementation STSocketServer
+@implementation SmalltalkSocketServer
 
 @synthesize lastError;
 @synthesize state;
 
-+ (STSocketServer *)sharedServer
++ (SmalltalkSocketServer *)sharedServer
 {
     static id sharedServer = nil;
     if (!sharedServer)
-        sharedServer = [[STSocketServer alloc] init];
+        sharedServer = [[SmalltalkSocketServer alloc] init];
     return sharedServer;
 }
 
@@ -345,8 +331,8 @@ NSString * const STSocketServerNotificationStateChanged = @"ServerNotificationSt
     
 	if(CFHTTPMessageIsHeaderComplete(incomingRequest))
 	{
-		STSocketResponseHandler *handler =
-        [STSocketResponseHandler
+		SmalltalkSocketResponseHandler *handler =
+        [SmalltalkSocketResponseHandler
          handlerForRequest:incomingRequest
          fileHandle:incomingFileHandle
          server:self];
@@ -369,7 +355,7 @@ NSString * const STSocketServerNotificationStateChanged = @"ServerNotificationSt
 // Parameters:
 //    aHandler - the handler to shut down.
 //
-- (void)closeHandler:(STSocketResponseHandler *)aHandler
+- (void)closeHandler:(SmalltalkSocketResponseHandler *)aHandler
 {
 	[aHandler endResponse];
 	[responseHandlers removeObject:aHandler];

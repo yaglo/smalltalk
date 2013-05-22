@@ -1,5 +1,5 @@
 //
-//  STSocketServer.h
+//  SmalltalkSocketServer.h
 //  Smalltalk
 //
 //  Created by Stanislav Yaglo on 05.03.13.
@@ -16,9 +16,9 @@ typedef enum
 	SERVER_STATE_STOPPING
 } STSocketServerState;
 
-@class STSocketResponseHandler;
+@class SmalltalkSocketResponseHandler;
 
-@interface STSocketServer : NSObject
+@interface SmalltalkSocketServer : NSObject
 {
 	NSError *lastError;
 	NSFileHandle *listeningHandle;
@@ -31,12 +31,12 @@ typedef enum
 @property (nonatomic, readonly, retain) NSError *lastError;
 @property (nonatomic, readonly, assign) STSocketServerState state;
 
-+ (STSocketServer *)sharedServer;
++ (SmalltalkSocketServer *)sharedServer;
 
 - (void)start;
 - (void)stop;
 
-- (void)closeHandler:(STSocketResponseHandler *)handler;
+- (void)closeHandler:(SmalltalkSocketResponseHandler *)handler;
 
 @end
 

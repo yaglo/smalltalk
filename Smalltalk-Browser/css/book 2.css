@@ -3,7 +3,9 @@
 }
 
 body {
-    font-family: 'Helvetica';
+    font-family: 'Consolas';
+    background-color: #1d1e21;
+    font-size: 12px;
 }
 
 sup{
@@ -18,8 +20,8 @@ p{
 	margin: 0px;
 }
 .s1{
-	color: #000000;
-	font-size: 80%;
+	color: #c5c7c6;
+	font-size: 100.0000%;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: normal;
@@ -34,28 +36,28 @@ p{
 	text-transform: none;
 }
 .s2{
-	color: #386ADD;
+	color: #81a1be;
 	font-weight: bold;
 }
 .c1{
-	color: #0071A6;
+	color: #f1c66e;
 }
 .c2{
-	color: #89001F;
+	color: #c56263;
 }
 .c3{
-	color: #386ADD;
+	color: #81a1be;
 }
 .c4{
-	color: #878874;
+	color: #969796;
 	font-style: italic;
 }
 .c5{
-	color: #549572;
+	color: #f1c66e;
 }
 .c6{
-	color: #34407C;
+	color: #cd6564;
 }
 .c7{
-	color: #D50032;
+	color: #b5be63;
 }

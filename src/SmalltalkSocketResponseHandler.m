@@ -1,13 +1,13 @@
 //
-//  STSocketResponseHandler.m
+//  SmalltalkSocketResponseHandler.m
 //  Smalltalk
 //
 //  Created by Stanislav Yaglo on 05.03.13.
 //  Copyright (c) 2013 Stanislav Yaglo. All rights reserved.
 //
 
-#import "STSocketResponseHandler.h"
-#import "STSocketServer.h"
+#import "SmalltalkSocketResponseHandler.h"
+#import "SmalltalkSocketServer.h"
 
 #import "SmalltalkClass.h"
 #import "SmalltalkMethod.h"
@@ -79,7 +79,7 @@
 
 @end
 
-@implementation STSocketResponseHandler
+@implementation SmalltalkSocketResponseHandler
 
 static NSMutableArray *registeredHandlers = nil;
 
@@ -111,7 +111,7 @@ static NSMutableArray *registeredHandlers = nil;
 //
 + (void)load
 {
-	[STSocketResponseHandler registerHandler:self];
+	[SmalltalkSocketResponseHandler registerHandler:self];
 }
 
 //
@@ -203,9 +203,9 @@ static NSMutableArray *registeredHandlers = nil;
 // returns the initialized handler (if one can handle the request) or nil
 //	(if no valid handler exists).
 //
-+ (STSocketResponseHandler *)handlerForRequest:(CFHTTPMessageRef)aRequest
++ (SmalltalkSocketResponseHandler *)handlerForRequest:(CFHTTPMessageRef)aRequest
                                 fileHandle:(NSFileHandle *)requestFileHandle
-                                    server:(STSocketServer *)aServer
+                                    server:(SmalltalkSocketServer *)aServer
 {
 	NSDictionary *requestHeaderFields =
     [(NSDictionary *)CFHTTPMessageCopyAllHeaderFields(aRequest)
@@ -222,7 +222,7 @@ static NSMutableArray *registeredHandlers = nil;
                              url:requestURL
                     headerFields:requestHeaderFields];
 	
-	STSocketResponseHandler *handler =
+	SmalltalkSocketResponseHandler *handler =
     [[[classForRequest alloc]
       initWithRequest:aRequest
       method:method
@@ -257,7 +257,7 @@ static NSMutableArray *registeredHandlers = nil;
                   url:(NSURL *)requestURL
          headerFields:(NSDictionary *)requestHeaderFields
            fileHandle:(NSFileHandle *)requestFileHandle
-               server:(STSocketServer *)aServer
+               server:(SmalltalkSocketServer *)aServer
 {
 	self = [super init];
 	if (self != nil)
@@ -297,11 +297,36 @@ static NSMutableArray *registeredHandlers = nil;
 //
 - (void)startResponse
 {
+    SmalltalkVM *vm = [SmalltalkVM sharedVM];
+
 	CFHTTPMessageRef response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 200, NULL, kCFHTTPVersion1_1);
 	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Type", (CFStringRef)@"text/html");
 	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Connection", (CFStringRef)@"close");
-	
-	NSString *responseString =
+    CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Access-Control-Allow-Origin", (CFStringRef)@"*");
+    CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Access-Control-Allow-Headers", (CFStringRef)@"Origin, X-Requested-With, Content-Type, Accept, If-Modified-Since, Cache-Control");
+
+	NSString *responseString;
+
+    if ([[url absoluteString] rangeOfString:@"/packages/"].location != NSNotFound) {
+        CFHTTPMessageSetBody(response, (CFDataRef)[NSJSONSerialization dataWithJSONObject:vm->_packages options:NSJSONWritingPrettyPrinted error:nil]);
+        
+        CFDataRef headerData = CFHTTPMessageCopySerializedMessage(response);
+        @try {
+            [fileHandle writeData:(NSData *)headerData];
+        }
+        @catch (NSException *exception) {
+            // Ignore the exception, it normally just means the client
+            // closed the connection from the other end.
+        }
+        @finally {
+            CFRelease(headerData);
+            CFRelease(response);
+            [server closeHandler:self];
+        }
+        return;
+    }
+
+    responseString =
 		@"<form action=\"replace\">"
 		@"Class: <input type=\"text\" name=\"class\" value=\"{class}\"/> "
 		@"Method: <input type=\"text\" name=\"method\" value=\"{method}\"/><br>"
@@ -316,7 +341,6 @@ static NSMutableArray *registeredHandlers = nil;
 		responseString = [responseString stringByReplacingOccurrencesOfString:@"{code}" withString:[parameters objectForKey:@"code"]];
 
 		if ([parameters count] == 3) {
-			SmalltalkVM *vm = [SmalltalkVM sharedVM];
 
 			NSString *code = [parameters objectForKey:@"code"];
 			NSArray *parts = [code componentsSeparatedByString:@"!!"];
