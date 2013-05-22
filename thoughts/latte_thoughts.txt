@@ -1,0 +1,91 @@
+
+Алгоритм посылки сообщения из метода на Smalltalk:
+	получатель - объект Smalltalk и метод реализован на Smalltalk?
+		да ->
+			перейти к методу
+		нет ->
+			анбоксировать аргументы и вызвать метод на Objective-C
+			возвращаемый тип - void?
+				да ->
+					вернуть получателя
+				нет ->
+					забоксировать результат и вернуть его
+
+
+Алгоритм посылки сообщения из Objective-C метода:
+	забоксировать аргументы и вызвать метод
+	разбоксировать результат и вернуть его
+
+
+enum {
+   NSBackingStoreRetained     = 0,
+   NSBackingStoreNonretained  = 1,
+   NSBackingStoreBuffered     = 2
+};
+typedef NSUInteger NSBackingStoreType;
+
+
+- (id)initWithContentRect:(NSRect)contentRect styleMask:(NSUInteger)windowStyle backing:(NSBackingStoreType)bufferingType defer:(BOOL)deferCreation
+
+
+
+window := NSWindow alloc
+	initWithContentRect: (125@513 extent: 383@175)
+	styleMask: NSTitledWindowMask & NSClosableWindowMask & NSMiniaturizableWindowMask
+	backing: NSBackingStoreBuffered
+	defer: false.
+
+arguments:
+	(Rectangle)
+	(SmallInteger)
+	(SmallInteger)
+	(Boolean)
+
+Rectangle
+	origin -> Point
+	corner -> Point
+
+Point
+	x -> any
+	y -> any
+
+
+Rectangle хранить лучше как origin, extent, чем origin, corner.
+
+NSRect latte_rectangle_to_nsrect(L$Rectangle *rect) {
+	double origin_x = latte_to_cfloat(rect[0][0]);
+	double origin_y = latte_to_cfloat(rect[0][1]);
+	double corner_x = latte_to_cfloat(rect[1][0]);
+	double corner_y = latte_to_cfloat(rect[1][1]);
+	
+	return NSMakeRect(origin_x, origin_y, corner_x - origin_x, corner_y - origin_y);
+}
+
+NSUInteger latte_smallinteger_to_uinteger(NSNumber *number) {
+	return [number unsignedIntegerValue];
+}
+
+BOOL latter_boolean_to_bool(L$Boolean *boolean) {
+	return boolean == L$True;
+}
+
+Из Nu про тип NSRect:
+
+#ifdef __x86_64__
+    ffi_type_nspoint.elements[0] = &ffi_type_double;
+    ffi_type_nspoint.elements[1] = &ffi_type_double;
+#else
+    ffi_type_nspoint.elements[0] = &ffi_type_float;
+    ffi_type_nspoint.elements[1] = &ffi_type_float;
+#endif
+    ffi_type_nspoint.elements[2] = NULL;
+
+
+
+
+Symbol <-> selector
+String <-> NSString
+OrderedCollection <=> NSMutableArray
+
+
+

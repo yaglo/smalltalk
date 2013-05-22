@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 
 
-
+#import "KernelObjects.h"
 #import "SmalltalkClass.h"
 #import "SmalltalkVM.h"
 
@@ -146,18 +146,18 @@ void InitializeMasterViewControllerClass()
     [MasterViewController smalltalk_addInstanceMethod:setDetailViewController];
 
     // - numberOfSectionsInTableView: tableView
-    //     ^1
+    //     ^20
     //
     // Index    Bytecode   Assembly                   Literal
     //
-    // 00       76         pushConstant: 1
+    // 00       20         pushConstant: 10
     // 01       7C         returnTop
     
-    byte_t numberOfSectionsInTableView_b[] = { 0x76, 0x7C };
+    byte_t numberOfSectionsInTableView_b[] = { 0x20, 0x7C };
     SmalltalkMethod *numberOfSectionsInTableView = [[SmalltalkMethod alloc]
                                              initWithSelector:@"numberOfSectionsInTableView:"
                                              bytecode:[NSData dataWithBytes:numberOfSectionsInTableView_b length:2]
-                                             literals:nil];
+                                             literals:@[[Integer $c:20]]];
     [MasterViewController smalltalk_addInstanceMethod:numberOfSectionsInTableView];
 
     // - tableView: tableView numberOfRowsInSection: section
@@ -177,67 +177,117 @@ void InitializeMasterViewControllerClass()
                                                     bytecode:[NSData dataWithBytes:tableView_numberOfRowsInSection_b length:3]
                                                     literals: @[ @"count" ]];
     [MasterViewController smalltalk_addInstanceMethod:tableView_numberOfRowsInSection];
-
-    // tableView: tableView cellForRowAtIndexPath: indexPath
-    //     | cell object |
-    //     cell := tableView dequeueReusableCellWithIdentifier: 'Cell' forIndexPath: indexPath.
+    
+    
+    // - tableView: tableView numberOfRowsInSection: section
+    //     ^10
     //
-    //     object := objects objectAtIndex: indexPath row.
-    //     cell textLabel setText: object description.
+    // Index    Bytecode   Assembly                   Literal
+    //
+    // 00       20         pushConstant: 10
+    // 01       7C         returnTop
+    
+    byte_t tableView_numberOfRowsInSection_b2[] = { 0x20, 0x7C };
+    SmalltalkMethod *tableView_numberOfRowsInSection2 = [[SmalltalkMethod alloc]
+                                                        initWithSelector:@"tableView:numberOfRowsInSection:"
+                                                        bytecode:[NSData dataWithBytes:tableView_numberOfRowsInSection_b2 length:2]
+                                                         literals: @[[Integer $c:10]]];
+    [MasterViewController smalltalk_addInstanceMethod:tableView_numberOfRowsInSection2];
+
+
+    
+    // tableView: tableView cellForRowAtIndexPath: indexPath
+    //     | cell |
+    //     cell := tableView dequeueReusableCellWithIdentifier: 'Cell' forIndexPath: indexPath.
+    //     cell textLabel setText: 'Row ', indexPath row asString.
+    //     cell contentView setBackgroundColor: UIColor redColor.
     //     ^cell
     //
-    // Temp:
-    // 0 = tableView
-    // 1 = indexPath
-    // 2 = cell
-    // 3 = object
-    //
-    // Literal:
-    // 0 = dequeueReusableCellWithIdentifier:forIndexPath:
-    // 1 = 'Cell'
-    // 2 = objectAtIndex:
-    // 3 = row
-    // 4 = setText:
-    // 5 = textLabel
-    // 6 = description
-    // 7 = setBackgroundColor:
-    // 8 = contentView
-    // 9 = redColor
-    // 10 = UIColor
     //
     // Index    Bytecode   Assembly                   Literal
     //
     // 00       10         pushTemp: 0
-    // 01       21         pushConstant: 'Cell'       1
+    // 01       20         pushConstant: 'Cell'       0
     // 02       11         pushTemp: 1
-    // 03       F0         send: dequeue...           0
+    // 03       F1         send: dequeue...           1
     // 04       6A         popIntoTemp: 2
-    // 05       01         pushRcvr: 1
-    // 06       11         pushTemp: 1
-    // 07       D3         send: row                  3
-    // 08       E2         send: objectAtIndex:       2
-    // 09       6B         popIntoTemp: 3
-    // 10       12         pushTemp: 2
-    // 11       D5         send: textLabel            5
-    // 12       13         pushTemp: 3
-    // 13       D6         send: description          6
-    // 14       E4         send: setText              4
-    // 15       87         pop
-    // 16       12         pushTemp: 2
-    // 17       D8         send: contentView          8
-    // 18       4A         pushLit: UIColor           10
-    // 19       D9         send: redColor             9
-    // 20       E7         send: setBackgroundColor:  7
-    // 21       87         pop
-    // 22       12         pushTemp: 2
-    // 23       7C         returnTop
+    
+    // 05       12         pushTemp: 2
+    // 06       D6         send: textLabel            6
 
-    byte_t cellForRow_b[] = { 0x10, 0x21, 0x11, 0xF0, 0x6A, 0x01, 0x11, 0xD3, 0xE2, 0x6B, 0x12, 0xD5, 0x13, 0xD6, 0xE4, 0x87, 0x12, 0xD8, 0x4A, 0xD9, 0xE7, 0x87, 0x12, 0x7C };
-    SmalltalkMethod *cellForRow = [[SmalltalkMethod alloc]
+    // 07       22         pushConstant: 'Row '       2
+    // 08       11         pushTemp: 1
+    // 09       D3         send: row                  3
+    // 10       D4         send: asString             4
+    // 11       E5         send: ,                    5
+
+    // 12       E7         send: setText:             7
+    // 13       87         pop
+
+    // 14       12         pushTemp: 2
+    // 15       D8         send: contentView          8
+
+    // 16       49         pushLit: UIColor           9
+    // 17       DA         send: redColor             10
+
+    // 18       EB         send: setBackgroundColor:  11
+    // 19       87         pop
+    
+    // 20       12         pushTemp: 2
+    // 21       7C         returnTop
+    
+    // Temp:
+    // 0 = tableView
+    // 1 = indexPath
+    // 2 = cell
+    //
+    // Literals:
+    // 0 = 'Cell'
+    // 1 = dequeueReusableCellWithIdentifier:forIndexPath:
+    // 2 = 'Row '
+    // 3 = row
+    // 4 = asString
+    // 5 = ,
+    // 6 = textLabel
+    // 7 = setText:
+    // 8 = contentView
+    // 9 = UIColor
+    // 10 = redColor
+    // 11 = setBackgroundColor:
+    
+    
+    byte_t cellForRow_b2[] = { 0x10, 0x20, 0x11, 0xF1, 0x6A, 0x12, 0xD6, 0x22, 0x11, 0xD3, 0xD4, 0xE5, 0xE7, 0x87, 0x12, 0xD8, 0x49, 0xDA, 0xEB, 0x87, 0x12, 0x7C };
+    SmalltalkMethod *cellForRow2 = [[SmalltalkMethod alloc]
                                    initWithSelector:@"tableView:cellForRowAtIndexPath:"
-                                   bytecode:[NSData dataWithBytes:cellForRow_b length:24]
-                                   literals: @[@"dequeueReusableCellWithIdentifier:forIndexPath:", @"Cell", @"objectAtIndex:", @"row", @"setText:", @"textLabel", @"description", @"setBackgroundColor:", @"contentView", @"redColor", @"UIColor"]];
-    [MasterViewController smalltalk_addInstanceMethod:cellForRow];
+                                   bytecode:[NSData dataWithBytes:cellForRow_b2 length:22]
+                                    literals: @[@"Cell", @"dequeueReusableCellWithIdentifier:forIndexPath:", [String $oc:@"Row "], @"row", @"asString", @",", @"textLabel", @"setText:", @"contentView", @"UIColor", @"redColor", @"setBackgroundColor:"]];
+    [MasterViewController smalltalk_addInstanceMethod:cellForRow2];
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    // tableView: tableView titleForHeaderInSection: section
+    //     ^ 'Section ', section asString
+    //
+//    25 <21> pushConstant: 'Section '
+//    26 <11> pushTemp: 1
+//    27 <D2> send: asString
+//    28 <E0> send: ,
+//    29 <7C> returnTop
+    
+    byte_t titleForHeader_b[] = { 0x21, 0x11, 0xD2, 0xE0, 0x7C };
+    SmalltalkMethod *titleForHeader = [[SmalltalkMethod alloc]
+                                       initWithSelector:@"tableView:titleForHeaderInSection:"
+                                       bytecode:[NSData dataWithBytes:titleForHeader_b length:5]
+                                       literals:@[@",", [String $oc:@"Section "], @"asString"]];
+    [MasterViewController smalltalk_addInstanceMethod:titleForHeader];
 
     // viewDidLoad
     //     | addButton |
@@ -246,7 +296,7 @@ void InitializeMasterViewControllerClass()
     //     "Do any additional setup after loading the view, typically from a nib"
     //     self navigationItem setLeftBarButtonItem: self editButtonItem.
     //
-    //     addButton := UIBarButtonItem alloc initWithBarButtonSystemItem: 4 target: self action: #'insertNewObject:'.
+    //     addButton := UIBarButtonItem alloc initWithBarButtonSystemItem: 4 target: self action: #insertNewObject:.
     //     self navigationItem setRightBarButtonItem: addButton.
     //     self setDetailViewController: self splitViewController viewControllers lastObject topViewController
     //

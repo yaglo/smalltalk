@@ -1,0 +1,92 @@
+(send
+	(send
+		(send
+			self
+			#zip)
+		#memberNamed:
+		"patch.bin")
+	#ifNotNil:
+	(block
+		($m)
+		(send
+			(block
+				(return
+					(assign
+						$patch
+						(send
+							(send
+								MCDataStream
+								#on:
+								(send
+									$m
+									#contentStream))
+							#next))))
+			#on:do:
+			Error
+			(block
+				($fallThrough)))))
+
+(assign
+	$definitions
+	(send
+		OrderedCollection
+		#new))
+
+(send
+	(send
+		(send
+			self
+			#zip)
+		#membersMatching:
+		"old/*"
+	)
+	#do:
+	(block
+		($m)
+		(send
+			self 
+			#extractDefinitionsFrom:
+			$m)))
+
+(assign
+	$old
+	(send
+		$definitions
+		#asArray))
+
+(assign
+	$definitions
+	(send
+		OrderedCollection
+		#new))
+
+(send
+	(send
+		(send
+			self
+			#zip)
+		#membersMatching:
+		"new/*"
+	)
+	#do:
+	(block
+		($m)
+		(send
+			self 
+			#extractDefinitionsFrom:
+			$m)))
+
+(assign
+	$new
+	(send
+		$definitions
+		#asArray))
+
+(return
+	(assign
+		$patch
+		(send
+			self
+			#buildPatchFrom:to:
+			$old
+			$new)))

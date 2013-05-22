@@ -9,6 +9,7 @@
 #import <objc/objc-class.h>
 #import <objc/runtime.h>
 
+#import "KernelObjects.h"
 #import "SmalltalkClass.h"
 #import "SmalltalkMethodContext.h"
 #import "SmalltalkObject.h"
@@ -82,65 +83,7 @@
     
     NSLog(@"%@", types);
 
-    IMP imp;
-    
-    if (argNum == 0) {
-        imp = imp_implementationWithBlock(^(id _self){
-            SmalltalkVM *vm = [SmalltalkVM sharedVM];
-            SmalltalkMethodContext *context = [[SmalltalkMethodContext alloc] init];
-            context.receiver = _self;
-            context.temporaryVariables = [[NSMutableArray alloc] init];
-
-            [vm pushContext:context];
-            id value = [vm executeMethod:method];
-            [vm popContext];
-            return value;
-        });
-    }
-    else if (argNum == 1) {
-        imp = imp_implementationWithBlock(^(id _self, id argument){
-            SmalltalkVM *vm = [SmalltalkVM sharedVM];
-            SmalltalkMethodContext *context = [[SmalltalkMethodContext alloc] init];
-            context.receiver = _self;
-            context.temporaryVariables = [[NSMutableArray alloc] init];
-            [context.temporaryVariables addObject:argument ? argument : [NSNull null]];
-
-            [vm pushContext:context];
-            id value = [vm executeMethod:method];
-            [vm popContext];
-            return value;
-        });
-    }
-    else if (argNum == 2) {
-        imp = imp_implementationWithBlock(^(id _self, id argument1, id argument2){
-            SmalltalkVM *vm = [SmalltalkVM sharedVM];
-            SmalltalkMethodContext *context = [[SmalltalkMethodContext alloc] init];
-            context.receiver = _self;
-            context.temporaryVariables = [[NSMutableArray alloc] init];
-            [context.temporaryVariables addObject:argument1 ? argument1 : [NSNull null]];
-            [context.temporaryVariables addObject:argument2 ? argument2 : [NSNull null]];
-
-            [vm pushContext:context];
-            id value = [vm executeMethod:method];
-            [vm popContext];
-            return value;
-        });
-    }
-    else {
-        imp = imp_implementationWithBlock(^(id _self, id argument, ...){
-            SmalltalkVM *vm = [SmalltalkVM sharedVM];
-            SmalltalkMethodContext *context = [[SmalltalkMethodContext alloc] init];
-            context.receiver = _self;
-            context.temporaryVariables = [[NSMutableArray alloc] init];
-            [context.temporaryVariables addObject:argument ? argument : [NSNull null]];
-            
-            [vm pushContext:context];
-            id value = [vm executeMethod:method];
-            [vm popContext];
-            return value;
-        });
-    }
-
+    IMP imp = lst_msgReceive;
     class_replaceMethod(_objc_class, NSSelectorFromString(method->_selector), imp, [types cStringUsingEncoding:NSASCIIStringEncoding]);
 }
 
@@ -154,11 +97,11 @@
     const char *name = [class->_name cStringUsingEncoding:NSASCIIStringEncoding];
 
     Class superclass = class->_superclass;
-    if ([class->_superclass isKindOfClass:[SmalltalkClass class]]) {
+    if ([class->_superclass isKindOfClass:[SmalltalkClass class]])
         superclass = ((SmalltalkClass *)class->_superclass)->_objc_class;
-    }
 
     class->_objc_class = objc_allocateClassPair(superclass, name, 0);
+    class_setVersion(class->_objc_class, ls_classVersion);
     objc_registerClassPair(class->_objc_class);
 }
 

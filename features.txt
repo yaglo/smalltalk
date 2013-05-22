@@ -1,0 +1,38 @@
+
+
+Support for GitHub, CocoaPods out of the box
+	PackageManager importGitHub: 'allending/Kiwi' revision: 'c478adbe'.
+	PackageManager importCocoaPod: 'JSONKit' version: '1.4'.
+
+Support for C header files
+
+Native storage format - Cypress (https://github.com/CampSmalltalk/Cypress)
+
+Literal syntax for regular expressions:
+	#/[a-z]+/i matches: 'identifier'.
+
+
+Object < MyClass {
+	| instanceVariable1 instanceVariable2 ClassVariable @property |
+
+	myMethod: aBlock {
+		^ aBlock value: #hello
+	}
+
+	yourself {} "returns self"
+}
+
+
+
+This formula is keg-only: so it was not symlinked into /usr/local.
+
+Mac OS X already provides this software and installing another version in
+parallel can cause all kinds of trouble.
+
+Some formulae require a newer version of libffi.
+
+Generally there are no consequences of this for you. If you build your
+own software and it requires this formula, you'll need to add to your
+build variables:
+
+    LDFLAGS:  -L/usr/local/opt/libffi/lib

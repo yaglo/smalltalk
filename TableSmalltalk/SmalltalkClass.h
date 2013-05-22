@@ -28,8 +28,6 @@
     NSMutableDictionary *_instancesRespondCache;
 }
 
-+ (id)alloc;
-
 // Private
 
 - (void)smalltalk_addInstanceMethod:(SmalltalkMethod *)method;

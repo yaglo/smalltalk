@@ -9,6 +9,9 @@
 #import <objc/message.h>
 #import <objc/runtime.h>
 
+#import "KernelObjects.h"
+#import "Runtime.h"
+
 #import "SmalltalkClass.h"
 #import "SmalltalkMethod.h"
 #import "SmalltalkMethodContext.h"
@@ -33,7 +36,8 @@
 - (void)initializeVM
 {
     [self initializeObjectiveCClasses];
-    _rootClass = [SmalltalkClass smalltalk_classWithName:@"Smalltalk_Object" superclass:[NSObject class]];
+    
+    _rootClass = [SmalltalkClass smalltalk_classWithName:@"$Object" superclass:[NSObject class]];
     [self initializeTranscript];
 }
 
@@ -49,7 +53,7 @@
 {
     id object = [_stack lastObject];
     [_stack removeLastObject];
-    if (object == [NSNull null])
+    if (object == $nil)
         return nil;
     return object;
 }
@@ -57,7 +61,7 @@
 - (void)pushObject:(id)object
 {
     if (object == nil)
-        object = [NSNull null];
+        object = $nil;
     [_stack addObject:object];
 }
 
@@ -105,7 +109,7 @@ char GetReturnType(id receiver, SEL selector)
 - (id)executeMethod:(SmalltalkMethod *)method
 {
     @synchronized(self) {
-    NSLog(@"Executing method: %@", method->_selector);
+//    NSLog(@"Executing method: %@", method->_selector);
 //    NSLog(@"Bytecode: %@", method->_bytecode);
 
     const byte_t *bytes = [method->_bytecode bytes];
@@ -160,10 +164,7 @@ char GetReturnType(id receiver, SEL selector)
             
             id object = [self popObject];
             
-            if (object)
-                [context.temporaryVariables setObject:object atIndexedSubscript:n];
-            else
-                [context.temporaryVariables setObject:[NSNull null] atIndexedSubscript:n];
+            context.temporaryVariables[n] = object ? object : $nil;
         }
         // 112        01110000    Push receiver
         else if (byte == 112) {
@@ -171,7 +172,7 @@ char GetReturnType(id receiver, SEL selector)
         }
         // 118        01110110    Push 1
         else if (byte == 118) {
-            [self pushObject:[NSNumber numberWithInt:1]];
+            [self pushObject: $1];
         }
         // 120        01111000    Return receiver
         else if (byte == 120) {
@@ -183,9 +184,6 @@ char GetReturnType(id receiver, SEL selector)
         }
         // 124        01111100    Return Stack Top From Message
         else if (byte == 124) {
-            if ([method->_selector isEqualToString:@"numberOfSectionsInTableView:"])
-                return (id)[[self popObject] intValue];
-
             return [self popObject];
         }
         // 131	10000011 jjjkkkkk	Send Literal Selector #kkkkk With jjj Arguments
@@ -238,7 +236,7 @@ char GetReturnType(id receiver, SEL selector)
                 }
                 else {
                     [self pushObject:value];
-                    //                @throw @"Unknown return type";
+                    @throw @"Unknown return type";
                 }
         }
         // 133	10000101 jjjkkkkk	Send Literal Selector #kkkkk To Superclass With jjj Arguments
@@ -295,11 +293,11 @@ char GetReturnType(id receiver, SEL selector)
                     [self pushObject:value];
                 }
                 else if (returnType == 'i') {
-                    [self pushObject:[NSNumber numberWithInt:(int)value]];
+                    [self pushObject:[Integer $c:(int)value]];
                 }
                 else {
                     [self pushObject:value];
-                    //                @throw @"Unknown return type";
+                    @throw @"Unknown return type";
                 }
             }
         }
@@ -318,7 +316,7 @@ char GetReturnType(id receiver, SEL selector)
             int newIndex = index + i * 256 + j;
             NSNumber *condition = [self popObject];
             if (![condition boolValue]) {
-//                NSLog(@"Jumping to %04d", newIndex);
+                NSLog(@"Jumping to %04d", newIndex);
                 index = newIndex - 1;
             }
         }
@@ -333,7 +331,6 @@ char GetReturnType(id receiver, SEL selector)
             int n = byte - 208;
             SEL selector = NSSelectorFromString([method->_literals objectAtIndex:n]);
 
-//            NSLog(@"send: %@", [method->_literals objectAtIndex:n]);
             id receiver = [self popObject];
             id value = objc_msgSend(receiver, selector);
 
@@ -343,7 +340,7 @@ char GetReturnType(id receiver, SEL selector)
                 [self pushObject:value];
             }
             else if (returnType == 'i') {
-                [self pushObject:[NSNumber numberWithInt:(int)value]];
+                [self pushObject:[Integer $c:(int)value]];
             }
             else if (returnType == 'v') {
                 [self pushObject:receiver];
@@ -360,22 +357,26 @@ char GetReturnType(id receiver, SEL selector)
             SEL selector = NSSelectorFromString(stringSelector);
             id argument = [self popObject];
             id receiver = [self popObject];
+            
             id value = objc_msgSend(receiver, selector, argument);
 
             char returnType = GetReturnType(receiver, selector);
             
             if (returnType == '@') {
-                [self pushObject:value];
+                if ([value isKindOfClass:[String class]])
+                    [self pushObject:[value $oc]];
+                else
+                    [self pushObject:value];
             }
             else if (returnType == 'i') {
-                [self pushObject:[NSNumber numberWithInt:(int)value]];
+                [self pushObject:[Integer $c:(int)value]];
             }
             else if (returnType == 'v') {
                 [self pushObject:receiver];
             }
             else {
                 [self pushObject:value];
-//                @throw @"Unknown return type";
+                @throw @"Unknown return type";
             }
         }
         // 240-255    1111iiii    Send Literal Selector #iiii With 2 Arguments
@@ -397,7 +398,7 @@ char GetReturnType(id receiver, SEL selector)
             }
             else {
                 [self pushObject:value];
-//                @throw @"Unknown return type";
+                @throw @"Unknown return type";
             }
         }
         else {
@@ -430,7 +431,7 @@ char GetReturnType(id receiver, SEL selector)
 - (void)initializeTranscript
 {
     SmalltalkClass *Transcript = [SmalltalkClass smalltalk_classWithName:@"Transcript"
-                                                              superclass:[_globalVariables objectForKey:@"Smalltalk_Object"]];
+                                                              superclass:[_globalVariables objectForKey:@"$Object"]];
     
     // 00 <8A> NSLog top
     // 01 <78> returnSelf

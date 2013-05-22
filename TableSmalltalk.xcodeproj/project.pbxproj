@@ -27,6 +27,8 @@
 		762150BB16ECB6250087408E /* STSocketResponseHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 762150B816ECB6240087408E /* STSocketResponseHandler.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		762150BC16ECB6250087408E /* STSocketServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 762150BA16ECB6250087408E /* STSocketServer.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		762150BE16ECB7400087408E /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 762150BD16ECB73F0087408E /* CFNetwork.framework */; };
+		763A95AD174D5F4A00415638 /* KernelObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = 763A95AC174D5F4A00415638 /* KernelObjects.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		763A95B0174D66C100415638 /* Runtime.m in Sources */ = {isa = PBXBuildFile; fileRef = 763A95AF174D66C000415638 /* Runtime.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +64,10 @@
 		762150B916ECB6240087408E /* STSocketServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSocketServer.h; sourceTree = "<group>"; };
 		762150BA16ECB6250087408E /* STSocketServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSocketServer.m; sourceTree = "<group>"; };
 		762150BD16ECB73F0087408E /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		763A95AB174D5F4A00415638 /* KernelObjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KernelObjects.h; sourceTree = "<group>"; };
+		763A95AC174D5F4A00415638 /* KernelObjects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KernelObjects.m; sourceTree = "<group>"; };
+		763A95AE174D66C000415638 /* Runtime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Runtime.h; sourceTree = "<group>"; };
+		763A95AF174D66C000415638 /* Runtime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Runtime.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +116,10 @@
 		7621508216EBBE0F0087408E /* TableSmalltalk */ = {
 			isa = PBXGroup;
 			children = (
+				763A95AB174D5F4A00415638 /* KernelObjects.h */,
+				763A95AC174D5F4A00415638 /* KernelObjects.m */,
+				763A95AE174D66C000415638 /* Runtime.h */,
+				763A95AF174D66C000415638 /* Runtime.m */,
 				7621509416EBBE0F0087408E /* MainStoryboard_iPhone.storyboard */,
 				7621509716EBBE0F0087408E /* MainStoryboard_iPad.storyboard */,
 				7621509D16EBBE0F0087408E /* DetailViewController.h */,
@@ -226,6 +236,8 @@
 				762150B616EBBE230087408E /* SmalltalkVM.m in Sources */,
 				762150BB16ECB6250087408E /* STSocketResponseHandler.m in Sources */,
 				762150BC16ECB6250087408E /* STSocketServer.m in Sources */,
+				763A95AD174D5F4A00415638 /* KernelObjects.m in Sources */,
+				763A95B0174D66C100415638 /* Runtime.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

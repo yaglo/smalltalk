@@ -29,7 +29,7 @@ typedef enum
 }
 
 @property (nonatomic, readonly, retain) NSError *lastError;
-@property (readonly, assign) STSocketServerState state;
+@property (nonatomic, readonly, assign) STSocketServerState state;
 
 + (STSocketServer *)sharedServer;
 

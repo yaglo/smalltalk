@@ -1,0 +1,186 @@
+// http://chronos-st.blogspot.ru/2007/12/smalltalk-in-one-page.html
+// http://parsekit.com/index.html
+
+and = '&';
+at = '@';
+backslash = '\\\\';
+closeParen = ')';
+closeSquareBracket = '[';
+colon = ':';
+comma = ',';
+d = 'd';
+dollar = '$';
+dot = '.';
+doubleQuote = '\"';
+e = 'e';
+equality = '=';
+exclamation = '!';
+gt = '>';
+hash = '#';
+lt = '<';
+minus = '-';
+openParen = '(';
+openSquareBracket = '[';
+percent = '%';
+pipe = '|';
+plus = '+';
+q = 'q';
+question = '?';
+r = 'r';
+s = 's';
+semicolon = ';';
+singleQuote = '\'';
+slash = '/';
+star = '*';
+tilde = '~';
+underscore = '_';
+
+nil = 'nil';
+false = 'false';
+true = 'true';
+self = 'self';
+super = 'super';
+thisContext = 'thisContext';
+
+assignment = ':=';
+
+
+character = Any;
+
+whitespaceCharacter = S;
+
+decimalDigit = Digit;
+
+letter = Letter;
+
+commentCharacter = doubleQuote doubleQuote | character;
+
+comment = doubleQuote commentCharacter* doubleQuote;
+
+optionalWhitespace = (whitespaceCharacter | comment)?;
+
+whitespace = (whitespaceCharacter | comment) optionalWhitespace;
+
+letterOrDigit = decimalDigit | letter;
+
+identifier = (letter | underscore) (letterOrDigit | underscore)*;
+
+reference = identifier;
+
+constantReference = nil | false | true;
+
+pseudoVariableReference = self | super | thisContext;
+
+reservedIdentifier = pseudoVariableReference | constantReference;
+
+bindableIdentifier = identifier; // - reservedIdentifier;
+
+unaryMessageSelector = identifier;
+
+keyword = identifier colon;
+
+keywordMessageSelector = keyword+;
+
+binarySelectorChar = tilde | exclamation | at | percent | and | star | minus | plus | equality | pipe | backslash | lt | gt | comma | question | slash;
+
+binaryMessageSelector = binarySelectorChar+;
+
+integerLiteral = minus? unsignedIntegerLiteral;
+
+unsignedIntegerLiteral = decimalIntegerLiteral | (radix r baseNIntegerLiteral);
+
+decimalIntegerLiteral = decimalDigit+;
+
+radix = decimalIntegerLiteral;
+
+baseNIntegerLiteral = letterOrDigit+;
+
+scaledDecimalLiteral = minus? decimalIntegerLiteral (dot decimalIntegerLiteral)? s decimalIntegerLiteral?;
+
+floatingPointLiteral = minus? decimalIntegerLiteral (dot decimalIntegerLiteral exponent? | exponent);
+
+exponent = (e | d | q) (minus? decimalIntegerLiteral)?;
+
+characterLiteral = dollar character;
+
+stringLiteral = singleQuote stringLiteralCharacter* singleQuote;
+
+stringLiteralCharacter = singleQuote singleQuote | character;
+
+symbolInArrayLiteral = unaryMessageSelector | keywordMessageSelector | binaryMessageSelector; //???
+
+symbolLiteral = hash (symbolInArrayLiteral | constantReference | stringLiteral);
+
+arrayLiteral = objectArrayLiteral | byteArrayLiteral;
+
+objectArrayLiteral = hash nestedObjectArrayLiteral;
+
+nestedObjectArrayLiteral = openParen optionalWhitespace (literalArrayElement (whitespace literalArrayElement)*)? optionalWhitespace closeParen;
+
+literalArrayElement = literal | nestedObjectArrayLiteral | symbolInArrayLiteral | constantReference; // ????
+
+byteArrayLiteral = hash openSquareBracket optionalWhitespace (unsignedIntegerLiteral (whitespace unsignedIntegerLiteral)*)? optionalWhitespace closeSquareBracket;
+
+formalBlockArgumentDeclaration = colon bindableIdentifier;
+
+formalBlockArgumentDeclarationList = formalBlockArgumentDeclaration (whitespace formalBlockArgumentDeclaration)*;
+
+blockLiteral = openSquareBracket (optionalWhitespace formalBlockArgumentDeclarationList optionalWhitespace pipe)? executableCode optionalWhitespace closeSquareBracket;
+
+literal = constantReference | integerLiteral | scaledDecimalLiteral | floatingPointLiteral | characterLiteral | stringLiteral | symbolLiteral | arrayLiteral | blockLiteral;
+
+nestedExpression = openParen statement optionalWhitespace closeParen;
+
+operand = literal | reference | nestedExpression;
+
+unaryMessage = unaryMessageSelector;
+
+unaryMessageChain = (optionalWhitespace unaryMessage)*;
+
+binaryMessageOperand = operand unaryMessageChain;
+
+binaryMessage = binaryMessageSelector optionalWhitespace binaryMessageOperand;
+
+binaryMessageChain = (optionalWhitespace binaryMessage)*;
+
+keywordMessageArgument = binaryMessageOperand binaryMessageChain;
+
+keywordMessageSegment = keyword optionalWhitespace keywordMessageArgument;
+
+keywordMessage = keywordMessageSegment (optionalWhitespace keywordMessageSegment)*;
+
+messageChain =
+	unaryMessage unaryMessageChain binaryMessageChain keywordMessage?
+	| binaryMessage binaryMessageChain keywordMessage?
+	| keywordMessage;
+
+cascadedMessage = semicolon optionalWhitespace messageChain;
+
+expression = operand (optionalWhitespace messageChain (optionalWhitespace cascadedMessage)*)?;
+
+assignmentOperation = optionalWhitespace bindableIdentifier optionalWhitespace assignment;
+
+statement = (assignmentOperation)* optionalWhitespace expression;
+
+methodReturnOperator = optionalWhitespace '^';
+
+finalStatement = methodReturnOperator? statement;
+
+localVariableDeclarationList = optionalWhitespace pipe optionalWhitespace (bindableIdentifier (whitespace bindableIdentifier)*)? optionalWhitespace pipe;
+
+executableCode = localVariableDeclarationList? ((statement optionalWhitespace dot)* finalStatement dot?)?;
+
+unaryMethodHeader = unaryMessageSelector;
+
+binaryMethodHeader = binaryMessageSelector optionalWhitespace bindableIdentifier;
+
+keywordMethodHeaderSegment = keyword optionalWhitespace bindableIdentifier;
+
+keywordMethodHeader = keywordMethodHeaderSegment (whitespace keywordMethodHeaderSegment)*;
+
+methodHeader =
+	unaryMethodHeader
+	| binaryMethodHeader
+	| keywordMethodHeader;
+
+methodDeclaration = optionalWhitespace methodHeader executableCode;
