@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 Stanislav Yaglo. All rights reserved.
 //
 
-#import <objc/objc-class.h>
 #import <objc/runtime.h>
 
 #import "KernelObjects.h"

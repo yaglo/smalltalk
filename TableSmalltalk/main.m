@@ -253,7 +253,7 @@ void InitializeMasterViewControllerClass()
     // 7 = setText:
     // 8 = contentView
     // 9 = UIColor
-    // 10 = grayColor
+    // 10 = whiteColor
     // 11 = setBackgroundColor:
     
     
@@ -261,7 +261,7 @@ void InitializeMasterViewControllerClass()
     SmalltalkMethod *cellForRow2 = [[SmalltalkMethod alloc]
                                    initWithSelector:@"tableView:cellForRowAtIndexPath:"
                                    bytecode:[NSData dataWithBytes:cellForRow_b2 length:22]
-                                    literals: @[@"Cell", @"dequeueReusableCellWithIdentifier:forIndexPath:", [String $oc:@"Row "], @"row", @"asString", @",", @"textLabel", @"setText:", @"contentView", @"UIColor", @"grayColor", @"setBackgroundColor:"]];
+                                    literals: @[@"Cell", @"dequeueReusableCellWithIdentifier:forIndexPath:", [String $oc:@"Row "], @"row", @"asString", @",", @"textLabel", @"setText:", @"contentView", @"UIColor", @"whiteColor", @"setBackgroundColor:"]];
     [MasterViewController smalltalk_addInstanceMethod:cellForRow2];
 
     
