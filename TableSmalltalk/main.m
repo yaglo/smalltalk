@@ -202,6 +202,7 @@ void InitializeMasterViewControllerClass()
     //     cell := tableView dequeueReusableCellWithIdentifier: 'Cell' forIndexPath: indexPath.
     //     cell textLabel setText: 'Row ', indexPath row asString.
     //     cell contentView setBackgroundColor: UIColor redColor.
+    //     tableView deselectRowAtIndexPath: indexPath.
     //     ^cell
     //
     //

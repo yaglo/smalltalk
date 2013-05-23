@@ -153,6 +153,7 @@ lst_msgReceive (id self, SEL _cmd, ...)
     for (int i = 0; i < argc; i++) {
         id argument = va_arg(arglist, id);
 
+        // temporary hack, will implement it with BridgeSupport
         if ((_cmd == @selector(tableView:titleForHeaderInSection:)
              || _cmd == @selector(tableView:numberOfRowsInSection:))&& i == 1)
             [arguments addObject: [Integer $c: (int)argument]];
@@ -171,6 +172,8 @@ lst_msgReceive (id self, SEL _cmd, ...)
     [vm pushContext:context];
     id value = [vm executeMethod:method];
     [vm popContext];
+    
+    [context release];
 
     if ([value isKindOfClass:[Integer class]]) {
         value = (id)[(Integer *)value $c];

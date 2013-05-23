@@ -74,7 +74,7 @@
     NSLog(@"%@", method->_selector);
     [_instanceMethods setObject:method forKey:method->_selector];
 
-    NSMutableString *types = [[NSMutableString alloc] initWithString:@"@:"];
+    NSMutableString *types = [NSMutableString stringWithString:@"@:"];
     NSUInteger argNum = [[method->_selector componentsSeparatedByString:@":"] count] - 1;
     for (int i = 0; i < argNum; i++) {
          [types appendString:@"@"];

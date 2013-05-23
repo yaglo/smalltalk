@@ -96,8 +96,7 @@ id $2;
 
 @implementation String
 {
-    unichar *_characters;
-    int _length;
+    NSMutableString *_string;
 }
 
 + (void)load
@@ -112,20 +111,18 @@ id $2;
 + (String *)$oc:(NSString *)string
 {
     String *object = [String new];
-    object->_length = [string length];
-    object->_characters = malloc(sizeof(unichar) * object->_length);
-    [string getCharacters:object->_characters range:NSMakeRange(0, object->_length)];
-    return object;
+    object->_string = [string mutableCopy];
+    return [object autorelease];
 }
 
 - (NSString *)$oc
 {
-    return [NSMutableString stringWithCharacters:_characters length:_length];
+    return _string;
 }
 
 - (void)dealloc
 {
-    free(_characters);
+    [_string release];
     [super dealloc];
 }
 
