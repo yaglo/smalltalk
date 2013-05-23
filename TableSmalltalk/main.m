@@ -70,7 +70,7 @@ void InitializeAppDelegateClass()
     // 6 = userInterfaceIdiom
     // 7 = currentDevice
     // 8 = UIDevice
-    // 9 = STSocketServer
+    // 9 = SmalltalkSocketServer
     // 10 = sharedServer
     // 11 = start
     //
@@ -103,7 +103,7 @@ void InitializeAppDelegateClass()
         
     byte_t didfinish_b[] = { 0x48, 0xD7, 0xD6, 0x76, 0xB6, 0xAC, 0x0D, 0x70, 0xD1, 0xD0,
         0x69, 0x11, 0xD3, 0xD2, 0x6A, 0x11, 0x12, 0xD5, 0xE4, 0x87, 0x49, 0xDA, 0xDB, 0x87, 0x78 };
-    NSArray *literals = @[ @"rootViewController", @"window", @"lastObject", @"viewControllers", @"setDelegate:", @"topViewController", @"userInterfaceIdiom", @"currentDevice", @"UIDevice", @"STSocketServer", @"sharedServer", @"start" ];
+    NSArray *literals = @[ @"rootViewController", @"window", @"lastObject", @"viewControllers", @"setDelegate:", @"topViewController", @"userInterfaceIdiom", @"currentDevice", @"UIDevice", @"SmalltalkSocketServer", @"sharedServer", @"start" ];
     SmalltalkMethod *didfinish = [[SmalltalkMethod alloc] initWithSelector:@"application:didFinishLaunchingWithOptions:"
                                                                   bytecode:[NSData dataWithBytes:didfinish_b length:25]
                                                                   literals:literals];
@@ -112,7 +112,7 @@ void InitializeAppDelegateClass()
 
 void InitializeMasterViewControllerClass()
 {
-    SmalltalkClass *MasterViewController = [SmalltalkClass smalltalk_classWithName:@"XMasterViewController" superclass:[UIViewController class]];
+    SmalltalkClass *MasterViewController = [SmalltalkClass smalltalk_classWithName:@"MasterViewController" superclass:[UIViewController class]];
     MasterViewController->_instanceVariableNames = @[ @"detailViewController", @"objects" ];
 
     // - detailViewController
@@ -253,7 +253,7 @@ void InitializeMasterViewControllerClass()
     // 7 = setText:
     // 8 = contentView
     // 9 = UIColor
-    // 10 = redColor
+    // 10 = grayColor
     // 11 = setBackgroundColor:
     
     
@@ -261,7 +261,7 @@ void InitializeMasterViewControllerClass()
     SmalltalkMethod *cellForRow2 = [[SmalltalkMethod alloc]
                                    initWithSelector:@"tableView:cellForRowAtIndexPath:"
                                    bytecode:[NSData dataWithBytes:cellForRow_b2 length:22]
-                                    literals: @[@"Cell", @"dequeueReusableCellWithIdentifier:forIndexPath:", [String $oc:@"Row "], @"row", @"asString", @",", @"textLabel", @"setText:", @"contentView", @"UIColor", @"redColor", @"setBackgroundColor:"]];
+                                    literals: @[@"Cell", @"dequeueReusableCellWithIdentifier:forIndexPath:", [String $oc:@"Row "], @"row", @"asString", @",", @"textLabel", @"setText:", @"contentView", @"UIColor", @"grayColor", @"setBackgroundColor:"]];
     [MasterViewController smalltalk_addInstanceMethod:cellForRow2];
 
     
@@ -436,10 +436,10 @@ l_0:
 
 
 
-@interface MasterViewController : UIViewController
+@interface XMasterViewController : UIViewController
 @end
 
-@implementation MasterViewController {
+@implementation XMasterViewController {
     id detailViewController;
     id objects;
 }
@@ -579,9 +579,9 @@ int main(int argc, char *argv[])
         SmalltalkVM *vm = [SmalltalkVM sharedVM];
         [vm initializeVM];
         
-//        InitializeAppDelegateClass();
-//        InitializeMasterViewControllerClass();
+        InitializeAppDelegateClass();
+        InitializeMasterViewControllerClass();
 
-        return UIApplicationMain(argc, argv, nil, @"CompiledAppDelegate");
+        return UIApplicationMain(argc, argv, nil, @"AppDelegate");
     }
 }

@@ -18,17 +18,17 @@
 		7621509616EBBE0F0087408E /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7621509416EBBE0F0087408E /* MainStoryboard_iPhone.storyboard */; };
 		7621509916EBBE0F0087408E /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7621509716EBBE0F0087408E /* MainStoryboard_iPad.storyboard */; };
 		7621509F16EBBE0F0087408E /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7621509E16EBBE0F0087408E /* DetailViewController.m */; };
-		762150B116EBBE230087408E /* SmalltalkScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 762150A616EBBE230087408E /* SmalltalkScanner.m */; };
-		762150B216EBBE230087408E /* SmalltalkObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 762150A816EBBE230087408E /* SmalltalkObject.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		762150B316EBBE230087408E /* SmalltalkClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 762150AA16EBBE230087408E /* SmalltalkClass.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		762150B416EBBE230087408E /* SmalltalkMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 762150AC16EBBE230087408E /* SmalltalkMethod.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		762150B516EBBE230087408E /* SmalltalkMethodContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 762150AE16EBBE230087408E /* SmalltalkMethodContext.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		762150B616EBBE230087408E /* SmalltalkVM.m in Sources */ = {isa = PBXBuildFile; fileRef = 762150B016EBBE230087408E /* SmalltalkVM.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		762150BB16ECB6250087408E /* STSocketResponseHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 762150B816ECB6240087408E /* STSocketResponseHandler.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		762150BC16ECB6250087408E /* STSocketServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 762150BA16ECB6250087408E /* STSocketServer.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		762150BE16ECB7400087408E /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 762150BD16ECB73F0087408E /* CFNetwork.framework */; };
 		763A95AD174D5F4A00415638 /* KernelObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = 763A95AC174D5F4A00415638 /* KernelObjects.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		763A95B0174D66C100415638 /* Runtime.m in Sources */ = {isa = PBXBuildFile; fileRef = 763A95AF174D66C000415638 /* Runtime.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		763A95C1174D8BF200415638 /* SmalltalkClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 763A95B2174D8BF200415638 /* SmalltalkClass.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		763A95C2174D8BF200415638 /* SmalltalkMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 763A95B4174D8BF200415638 /* SmalltalkMethod.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		763A95C3174D8BF200415638 /* SmalltalkMethodContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 763A95B6174D8BF200415638 /* SmalltalkMethodContext.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		763A95C4174D8BF200415638 /* SmalltalkObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 763A95B8174D8BF200415638 /* SmalltalkObject.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		763A95C5174D8BF200415638 /* SmalltalkScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 763A95BA174D8BF200415638 /* SmalltalkScanner.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		763A95C6174D8BF200415638 /* SmalltalkSocketResponseHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 763A95BC174D8BF200415638 /* SmalltalkSocketResponseHandler.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		763A95C7174D8BF200415638 /* SmalltalkSocketServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 763A95BE174D8BF200415638 /* SmalltalkSocketServer.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		763A95C8174D8BF200415638 /* SmalltalkVM.m in Sources */ = {isa = PBXBuildFile; fileRef = 763A95C0174D8BF200415638 /* SmalltalkVM.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,27 +47,27 @@
 		7621509816EBBE0F0087408E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
 		7621509D16EBBE0F0087408E /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		7621509E16EBBE0F0087408E /* DetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
-		762150A516EBBE230087408E /* SmalltalkScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SmalltalkScanner.h; sourceTree = "<group>"; };
-		762150A616EBBE230087408E /* SmalltalkScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SmalltalkScanner.m; sourceTree = "<group>"; };
-		762150A716EBBE230087408E /* SmalltalkObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SmalltalkObject.h; sourceTree = "<group>"; };
-		762150A816EBBE230087408E /* SmalltalkObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SmalltalkObject.m; sourceTree = "<group>"; };
-		762150A916EBBE230087408E /* SmalltalkClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SmalltalkClass.h; sourceTree = "<group>"; };
-		762150AA16EBBE230087408E /* SmalltalkClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SmalltalkClass.m; sourceTree = "<group>"; };
-		762150AB16EBBE230087408E /* SmalltalkMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SmalltalkMethod.h; sourceTree = "<group>"; };
-		762150AC16EBBE230087408E /* SmalltalkMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SmalltalkMethod.m; sourceTree = "<group>"; };
-		762150AD16EBBE230087408E /* SmalltalkMethodContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SmalltalkMethodContext.h; sourceTree = "<group>"; };
-		762150AE16EBBE230087408E /* SmalltalkMethodContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SmalltalkMethodContext.m; sourceTree = "<group>"; };
-		762150AF16EBBE230087408E /* SmalltalkVM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SmalltalkVM.h; sourceTree = "<group>"; };
-		762150B016EBBE230087408E /* SmalltalkVM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SmalltalkVM.m; sourceTree = "<group>"; };
-		762150B716ECB6240087408E /* STSocketResponseHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSocketResponseHandler.h; sourceTree = "<group>"; };
-		762150B816ECB6240087408E /* STSocketResponseHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSocketResponseHandler.m; sourceTree = "<group>"; usesTabs = 1; };
-		762150B916ECB6240087408E /* STSocketServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STSocketServer.h; sourceTree = "<group>"; };
-		762150BA16ECB6250087408E /* STSocketServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STSocketServer.m; sourceTree = "<group>"; };
 		762150BD16ECB73F0087408E /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		763A95AB174D5F4A00415638 /* KernelObjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KernelObjects.h; sourceTree = "<group>"; };
 		763A95AC174D5F4A00415638 /* KernelObjects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KernelObjects.m; sourceTree = "<group>"; };
 		763A95AE174D66C000415638 /* Runtime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Runtime.h; sourceTree = "<group>"; };
 		763A95AF174D66C000415638 /* Runtime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Runtime.m; sourceTree = "<group>"; };
+		763A95B1174D8BF200415638 /* SmalltalkClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SmalltalkClass.h; path = src/SmalltalkClass.h; sourceTree = SOURCE_ROOT; };
+		763A95B2174D8BF200415638 /* SmalltalkClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SmalltalkClass.m; path = src/SmalltalkClass.m; sourceTree = SOURCE_ROOT; };
+		763A95B3174D8BF200415638 /* SmalltalkMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SmalltalkMethod.h; path = src/SmalltalkMethod.h; sourceTree = SOURCE_ROOT; };
+		763A95B4174D8BF200415638 /* SmalltalkMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SmalltalkMethod.m; path = src/SmalltalkMethod.m; sourceTree = SOURCE_ROOT; };
+		763A95B5174D8BF200415638 /* SmalltalkMethodContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SmalltalkMethodContext.h; path = src/SmalltalkMethodContext.h; sourceTree = SOURCE_ROOT; };
+		763A95B6174D8BF200415638 /* SmalltalkMethodContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SmalltalkMethodContext.m; path = src/SmalltalkMethodContext.m; sourceTree = SOURCE_ROOT; };
+		763A95B7174D8BF200415638 /* SmalltalkObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SmalltalkObject.h; path = src/SmalltalkObject.h; sourceTree = SOURCE_ROOT; };
+		763A95B8174D8BF200415638 /* SmalltalkObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SmalltalkObject.m; path = src/SmalltalkObject.m; sourceTree = SOURCE_ROOT; };
+		763A95B9174D8BF200415638 /* SmalltalkScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SmalltalkScanner.h; path = src/SmalltalkScanner.h; sourceTree = SOURCE_ROOT; };
+		763A95BA174D8BF200415638 /* SmalltalkScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SmalltalkScanner.m; path = src/SmalltalkScanner.m; sourceTree = SOURCE_ROOT; };
+		763A95BB174D8BF200415638 /* SmalltalkSocketResponseHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SmalltalkSocketResponseHandler.h; path = src/SmalltalkSocketResponseHandler.h; sourceTree = SOURCE_ROOT; };
+		763A95BC174D8BF200415638 /* SmalltalkSocketResponseHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SmalltalkSocketResponseHandler.m; path = src/SmalltalkSocketResponseHandler.m; sourceTree = SOURCE_ROOT; };
+		763A95BD174D8BF200415638 /* SmalltalkSocketServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SmalltalkSocketServer.h; path = src/SmalltalkSocketServer.h; sourceTree = SOURCE_ROOT; };
+		763A95BE174D8BF200415638 /* SmalltalkSocketServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SmalltalkSocketServer.m; path = src/SmalltalkSocketServer.m; sourceTree = SOURCE_ROOT; };
+		763A95BF174D8BF200415638 /* SmalltalkVM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SmalltalkVM.h; path = src/SmalltalkVM.h; sourceTree = SOURCE_ROOT; };
+		763A95C0174D8BF200415638 /* SmalltalkVM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SmalltalkVM.m; path = src/SmalltalkVM.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,22 +124,22 @@
 				7621509716EBBE0F0087408E /* MainStoryboard_iPad.storyboard */,
 				7621509D16EBBE0F0087408E /* DetailViewController.h */,
 				7621509E16EBBE0F0087408E /* DetailViewController.m */,
-				762150A516EBBE230087408E /* SmalltalkScanner.h */,
-				762150A616EBBE230087408E /* SmalltalkScanner.m */,
-				762150A716EBBE230087408E /* SmalltalkObject.h */,
-				762150A816EBBE230087408E /* SmalltalkObject.m */,
-				762150A916EBBE230087408E /* SmalltalkClass.h */,
-				762150AA16EBBE230087408E /* SmalltalkClass.m */,
-				762150AB16EBBE230087408E /* SmalltalkMethod.h */,
-				762150AC16EBBE230087408E /* SmalltalkMethod.m */,
-				762150AD16EBBE230087408E /* SmalltalkMethodContext.h */,
-				762150AE16EBBE230087408E /* SmalltalkMethodContext.m */,
-				762150AF16EBBE230087408E /* SmalltalkVM.h */,
-				762150B016EBBE230087408E /* SmalltalkVM.m */,
-				762150B716ECB6240087408E /* STSocketResponseHandler.h */,
-				762150B816ECB6240087408E /* STSocketResponseHandler.m */,
-				762150B916ECB6240087408E /* STSocketServer.h */,
-				762150BA16ECB6250087408E /* STSocketServer.m */,
+				763A95B1174D8BF200415638 /* SmalltalkClass.h */,
+				763A95B2174D8BF200415638 /* SmalltalkClass.m */,
+				763A95B3174D8BF200415638 /* SmalltalkMethod.h */,
+				763A95B4174D8BF200415638 /* SmalltalkMethod.m */,
+				763A95B5174D8BF200415638 /* SmalltalkMethodContext.h */,
+				763A95B6174D8BF200415638 /* SmalltalkMethodContext.m */,
+				763A95B7174D8BF200415638 /* SmalltalkObject.h */,
+				763A95B8174D8BF200415638 /* SmalltalkObject.m */,
+				763A95B9174D8BF200415638 /* SmalltalkScanner.h */,
+				763A95BA174D8BF200415638 /* SmalltalkScanner.m */,
+				763A95BB174D8BF200415638 /* SmalltalkSocketResponseHandler.h */,
+				763A95BC174D8BF200415638 /* SmalltalkSocketResponseHandler.m */,
+				763A95BD174D8BF200415638 /* SmalltalkSocketServer.h */,
+				763A95BE174D8BF200415638 /* SmalltalkSocketServer.m */,
+				763A95BF174D8BF200415638 /* SmalltalkVM.h */,
+				763A95C0174D8BF200415638 /* SmalltalkVM.m */,
 				7621508316EBBE0F0087408E /* Supporting Files */,
 			);
 			path = TableSmalltalk;
@@ -228,16 +228,16 @@
 			files = (
 				7621508916EBBE0F0087408E /* main.m in Sources */,
 				7621509F16EBBE0F0087408E /* DetailViewController.m in Sources */,
-				762150B116EBBE230087408E /* SmalltalkScanner.m in Sources */,
-				762150B216EBBE230087408E /* SmalltalkObject.m in Sources */,
-				762150B316EBBE230087408E /* SmalltalkClass.m in Sources */,
-				762150B416EBBE230087408E /* SmalltalkMethod.m in Sources */,
-				762150B516EBBE230087408E /* SmalltalkMethodContext.m in Sources */,
-				762150B616EBBE230087408E /* SmalltalkVM.m in Sources */,
-				762150BB16ECB6250087408E /* STSocketResponseHandler.m in Sources */,
-				762150BC16ECB6250087408E /* STSocketServer.m in Sources */,
 				763A95AD174D5F4A00415638 /* KernelObjects.m in Sources */,
 				763A95B0174D66C100415638 /* Runtime.m in Sources */,
+				763A95C1174D8BF200415638 /* SmalltalkClass.m in Sources */,
+				763A95C2174D8BF200415638 /* SmalltalkMethod.m in Sources */,
+				763A95C3174D8BF200415638 /* SmalltalkMethodContext.m in Sources */,
+				763A95C4174D8BF200415638 /* SmalltalkObject.m in Sources */,
+				763A95C5174D8BF200415638 /* SmalltalkScanner.m in Sources */,
+				763A95C6174D8BF200415638 /* SmalltalkSocketResponseHandler.m in Sources */,
+				763A95C7174D8BF200415638 /* SmalltalkSocketServer.m in Sources */,
+				763A95C8174D8BF200415638 /* SmalltalkVM.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

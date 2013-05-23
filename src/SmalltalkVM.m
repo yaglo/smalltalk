@@ -424,7 +424,7 @@ char GetReturnType(id receiver, SEL selector)
 
     NSMutableArray *foundationClasses = [NSMutableArray array];
 
-#define FoundationClass(name) [_globalVariables setObject:[SmalltalkSocketServer class] forKey:name]; [foundationClasses addObject:name];
+#define FoundationClass(name) [_globalVariables setObject:NSClassFromString(name) forKey:name]; [foundationClasses addObject:name];
 
     FoundationClass(@"NSArray");
     FoundationClass(@"NSDictionary");
@@ -432,7 +432,10 @@ char GetReturnType(id receiver, SEL selector)
     FoundationClass(@"NSMutableArray");
     FoundationClass(@"NSMutableDictionary");
     FoundationClass(@"NSString");
-
+    FoundationClass(@"UIColor");
+    FoundationClass(@"UIDevice");
+    FoundationClass(@"SmalltalkSocketServer");
+    
     [_packages setObject:foundationClasses forKey:@"Foundation"];
     [_packages setObject:@[ @"AppDelegate" ] forKey:@"RandomApp"];
 
