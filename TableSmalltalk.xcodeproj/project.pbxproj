@@ -29,6 +29,7 @@
 		763A95C6174D8BF200415638 /* SmalltalkSocketResponseHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 763A95BC174D8BF200415638 /* SmalltalkSocketResponseHandler.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		763A95C7174D8BF200415638 /* SmalltalkSocketServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 763A95BE174D8BF200415638 /* SmalltalkSocketServer.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		763A95C8174D8BF200415638 /* SmalltalkVM.m in Sources */ = {isa = PBXBuildFile; fileRef = 763A95C0174D8BF200415638 /* SmalltalkVM.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		76BBC4591E7831B900BEF1B6 /* ObjCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 76BBC4581E7831B900BEF1B6 /* ObjCAppDelegate.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +69,8 @@
 		763A95BE174D8BF200415638 /* SmalltalkSocketServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SmalltalkSocketServer.m; path = src/SmalltalkSocketServer.m; sourceTree = SOURCE_ROOT; };
 		763A95BF174D8BF200415638 /* SmalltalkVM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SmalltalkVM.h; path = src/SmalltalkVM.h; sourceTree = SOURCE_ROOT; };
 		763A95C0174D8BF200415638 /* SmalltalkVM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SmalltalkVM.m; path = src/SmalltalkVM.m; sourceTree = SOURCE_ROOT; };
+		76BBC4571E7831B900BEF1B6 /* ObjCAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjCAppDelegate.h; sourceTree = "<group>"; };
+		76BBC4581E7831B900BEF1B6 /* ObjCAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjCAppDelegate.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +144,8 @@
 				763A95BF174D8BF200415638 /* SmalltalkVM.h */,
 				763A95C0174D8BF200415638 /* SmalltalkVM.m */,
 				7621508316EBBE0F0087408E /* Supporting Files */,
+				76BBC4571E7831B900BEF1B6 /* ObjCAppDelegate.h */,
+				76BBC4581E7831B900BEF1B6 /* ObjCAppDelegate.m */,
 			);
 			path = TableSmalltalk;
 			sourceTree = "<group>";
@@ -234,6 +239,7 @@
 				763A95C2174D8BF200415638 /* SmalltalkMethod.m in Sources */,
 				763A95C3174D8BF200415638 /* SmalltalkMethodContext.m in Sources */,
 				763A95C4174D8BF200415638 /* SmalltalkObject.m in Sources */,
+				76BBC4591E7831B900BEF1B6 /* ObjCAppDelegate.m in Sources */,
 				763A95C5174D8BF200415638 /* SmalltalkScanner.m in Sources */,
 				763A95C6174D8BF200415638 /* SmalltalkSocketResponseHandler.m in Sources */,
 				763A95C7174D8BF200415638 /* SmalltalkSocketServer.m in Sources */,

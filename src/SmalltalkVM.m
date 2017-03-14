@@ -232,7 +232,7 @@ char GetReturnType(id receiver, SEL selector)
                 if (returnType == '@') {
                     [self pushObject:value];
                 }
-                else if (returnType == 'i') {
+                else if (returnType == 'i' || returnType == 'q') {
                     [self pushObject:[NSNumber numberWithInt:(int)value]];
                 }
                 else {
@@ -293,7 +293,7 @@ char GetReturnType(id receiver, SEL selector)
                 if (returnType == '@') {
                     [self pushObject:value];
                 }
-                else if (returnType == 'i') {
+                else if (returnType == 'i' || returnType == 'q') {
                     [self pushObject:[Integer $c:(int)value]];
                 }
                 else {
@@ -340,7 +340,7 @@ char GetReturnType(id receiver, SEL selector)
             if (returnType == '@') {
                 [self pushObject:value];
             }
-            else if (returnType == 'i') {
+            else if (returnType == 'i' || returnType == 'q') {
                 [self pushObject:[Integer $c:(int)value]];
             }
             else if (returnType == 'v') {
@@ -369,7 +369,7 @@ char GetReturnType(id receiver, SEL selector)
                 else
                     [self pushObject:value];
             }
-            else if (returnType == 'i') {
+            else if (returnType == 'i' || returnType == 'q') {
                 [self pushObject:[Integer $c:(int)value]];
             }
             else if (returnType == 'v') {
@@ -394,7 +394,7 @@ char GetReturnType(id receiver, SEL selector)
             if (returnType == '@') {
                 [self pushObject:value];
             }
-            else if (returnType == 'i') {
+            else if (returnType == 'i' || returnType == 'q') {
                 [self pushObject:[NSNumber numberWithInt:(int)value]];
             }
             else {

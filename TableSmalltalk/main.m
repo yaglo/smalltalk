@@ -22,7 +22,7 @@ void InitializeAppDelegateClass()
 
     SmalltalkClass *AppDelegate = [SmalltalkClass smalltalk_classWithName:@"AppDelegate" superclass:vm.rootClass];
     AppDelegate->_instanceVariableNames = @[ @"window" ];
-    
+
     // - window
     //     ^window
     //
@@ -583,6 +583,6 @@ int main(int argc, char *argv[])
         InitializeAppDelegateClass();
         InitializeMasterViewControllerClass();
 
-        return UIApplicationMain(argc, argv, nil, @"AppDelegate");
+        return UIApplicationMain(argc, argv, nil, @"ObjCAppDelegate");
     }
 }
